@@ -1,139 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diesel Voucher</title>
-    <meta name="theme-color" content="#667eea">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Diesel Voucher">
-    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Diesel Voucher%22,%22short_name%22:%22Diesel%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22#667eea%22,%22theme_color%22:%22#667eea%22,%22icons%22:[{%22src%22:%22https://rpm.gt.tc/logo.png%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22},{%22src%22:%22https://rpm.gt.tc/logo.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
-    <style>
-        @keyframes floatBounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-12px) scale(1.05)}}
-        @keyframes buttonPress{0%{transform:scale(1)}50%{transform:scale(0.95)}100%{transform:scale(1)}}
-        @keyframes ripple{0%{transform:scale(0);opacity:1}100%{transform:scale(4);opacity:0}}
-        @keyframes spinner{to{transform:rotate(360deg)}}
-        @keyframes checkmark{0%{transform:scale(0);opacity:0}50%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
-        @keyframes fadeOut{to{opacity:0;transform:scale(0.8)}}
-        @keyframes progress{0%{width:0%}100%{width:100%}}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-        body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);margin:0;padding:15px;display:flex;justify-content:center;align-items:center;min-height:100vh;position:relative}
-        .form-container{background:#fff;padding:25px 20px;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);width:100%;max-width:400px;animation:fadeIn .8s ease-out}
-        .header{text-align:center;margin-bottom:25px}
-        .logo{width:90px;height:90px;object-fit:contain;margin:0 auto 12px;animation:floatBounce 3s ease-in-out infinite;border-radius:50%;padding:8px;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.18);border:4px solid #4caf50}
-        .title{font-size:22px;color:#333;font-weight:bold;margin-top:5px}
-        .form-group{margin-bottom:18px}
-        label{display:block;margin-bottom:6px;font-weight:600;color:#555;font-size:14px}
-        input,select{width:100%;padding:12px;border:2px solid #e0e0e0;border-radius:10px;box-sizing:border-box;font-size:15px;transition:all .3s}
-        input:focus,select:focus{outline:none;border-color:#4caf50;box-shadow:0 0 0 3px rgba(76,175,80,.1)}
-        .required{color:#ff5252}
-        .submit-btn{width:100%;padding:15px;background:linear-gradient(135deg,#4caf50 0%,#45a049 100%);color:#fff;border:none;border-radius:12px;font-size:17px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden;transition:all .3s;box-shadow:0 4px 15px rgba(76,175,80,.4);margin-top:10px}
-        .submit-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(76,175,80,.5)}
-        .submit-btn:active{animation:buttonPress .3s}
-        .submit-btn.animating{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);pointer-events:none}
-        .loader{display:none;width:24px;height:24px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spinner .8s linear infinite}
-        .checkmark{display:none;font-size:28px;font-weight:bold}
-        .submit-btn.animating .loader{display:block}
-        .submit-btn.animating .submit-btn-text{animation:fadeOut .3s forwards;opacity:0}
-        .submit-btn.success .checkmark{display:block;animation:checkmark .5s forwards}
-        .progress-bar{position:absolute;bottom:0;left:0;height:4px;background:rgba(255,255,255,.5);border-radius:0 0 12px 12px;display:none}
-        .submit-btn.animating .progress-bar{display:block;animation:progress 2s forwards}
-        .ripple-effect{position:absolute;border-radius:50%;background:rgba(255,255,255,.6);width:20px;height:20px;pointer-events:none;animation:ripple .6s ease-out}
-        .footer{text-align:center;margin-top:20px;font-size:12px;color:#888}
-        @media (max-width:480px){.logo{width:80px;height:80px}.title{font-size:20px}input,select{font-size:16px}}
-        .fab{position:fixed;top:20px;right:20px;width:48px;height:48px;background:linear-gradient(135deg,#4caf50 0%,#45a049 100%);color:#fff;border:none;border-radius:50%;font-size:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 15px rgba(0,0,0,.3);cursor:pointer;z-index:1000;transition:all .3s}
-        .fab:hover{transform:scale(1.15);box-shadow:0 6px 20px rgba(0,0,0,.4)}
-        .calculator-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:999;align-items:center;justify-content:center}
-        .calculator-modal.active{display:flex}
-        .calculator-container{background:#fff;padding:25px 20px;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.3);width:90%;max-width:400px;position:relative}
-        .calculator-header{text-align:center;margin-bottom:20px;font-size:20px;font-weight:bold;color:#333}
-        .calculator-close{position:absolute;top:10px;left:15px;font-size:28px;cursor:pointer;color:#888;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s}
-        .calculator-close:hover{background:#f0f0f0;color:#333}
-        .calculator-result{margin-top:20px;padding:15px;background:#f0fdf4;border-radius:12px;font-size:16px;min-height:80px}
-        .result-line{margin:10px 0;display:flex;justify-content:space-between;align-items:center}
-        .result-label{color:#444;font-weight:600}
-        .result-value{font-weight:bold;color:#1e40af;font-size:17px}
-        .due{color:#dc2626}
-        .credit{color:#16a34a}
-        @media (max-width:480px){.fab{width:44px;height:44px;top:15px;right:15px;font-size:26px}}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Diesel Voucher</title>
+<meta name="theme-color" content="#667eea">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Diesel Voucher">
+<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Diesel Voucher%22,%22short_name%22:%22Diesel%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22#667eea%22,%22theme_color%22:%22#667eea%22,%22icons%22:[{%22src%22:%22https://rpm.gt.tc/logo.png%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22},{%22src%22:%22https://rpm.gt.tc/logo.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
+<style>
+body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);margin:0;padding:15px;display:flex;justify-content:center;align-items:center;min-height:100vh;position:relative}
+.form-container{background:#fff;padding:25px 20px;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);width:100%;max-width:400px}
+.header{text-align:center;margin-bottom:25px}
+.logo{width:90px;height:90px;object-fit:contain;margin:0 auto 12px;border-radius:50%;padding:8px;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.18);border:4px solid #4caf50}
+.title{font-size:22px;color:#333;font-weight:bold;margin-top:5px}
+.form-group{margin-bottom:18px}
+label{display:block;margin-bottom:6px;font-weight:600;color:#555;font-size:14px}
+input,select{width:100%;padding:12px;border:2px solid #e0e0e0;border-radius:10px;box-sizing:border-box;font-size:15px;transition:all .3s}
+input:focus,select:focus{outline:none;border-color:#4caf50;box-shadow:0 0 0 3px rgba(76,175,80,.1)}
+.required{color:#ff5252}
+.submit-btn{width:100%;padding:15px;background:linear-gradient(135deg,#4caf50 0%,#45a049 100%);color:#fff;border:none;border-radius:12px;font-size:17px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden;transition:all .3s;box-shadow:0 4px 15px rgba(76,175,80,.4);margin-top:10px}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(76,175,80,.5)}
+.submit-btn.animating{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);pointer-events:none}
+.loader{display:none;width:24px;height:24px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%}
+.checkmark{display:none;font-size:28px;font-weight:bold}
+.submit-btn.animating .loader{display:block}
+.submit-btn.animating .submit-btn-text{opacity:0}
+.submit-btn.success .checkmark{display:block}
+.footer{text-align:center;margin-top:20px;font-size:12px;color:#888}
+.fab{position:fixed;top:20px;right:20px;width:36px;height:36px;background:transparent;border:none;border-radius:50%;font-size:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:1000;transition:all .3s}
+.fab:hover{transform:scale(1.25);background:rgba(76,175,80,.15)}
+.calculator-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:999;align-items:center;justify-content:center}
+.calculator-modal.active{display:flex}
+.calculator-container{background:#fff;padding:25px 20px;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.3);width:90%;max-width:400px;position:relative}
+.calculator-header{text-align:center;margin-bottom:20px;font-size:20px;font-weight:bold;color:#333}
+.calculator-close{position:absolute;top:10px;left:15px;font-size:28px;cursor:pointer;color:#888;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s}
+.calculator-close:hover{background:#f0f0f0;color:#333}
+.calculator-result{margin-top:20px;padding:15px;background:#f0fdf4;border-radius:12px;font-size:16px;min-height:80px}
+.result-line{margin:10px 0;display:flex;justify-content:space-between;align-items:center}
+.result-label{color:#444;font-weight:600}
+.result-value{font-weight:bold;color:#1e40af;font-size:17px}
+.due{color:#dc2626}
+.credit{color:#16a34a}
+@media (max-width:480px){.fab{width:32px;height:32px;top:15px;right:15px;font-size:22px}}
+</style>
 </head>
 <body>
-    <div class="form-container">
-        <div class="header">
-            <img src="https://rpm.gt.tc/logo.png" alt="RPM Logo" class="logo">
-            <div class="title">Diesel Voucher</div>
-        </div>
-        <form id="dieselForm">
-            <div class="form-group"><label for="vehicleNo">🚛 Vehicle No<span class="required">*</span></label><input type="text" id="vehicleNo" required></div>
-            <div class="form-group"><label for="vehicleType">🚚 Vehicle Type<span class="required">*</span></label>
-                <select id="vehicleType" required>
-                    <option value="">Select Vehicle Type</option>
-                    <option value="BUS,6">BUS,6</option><option value="TATA ACE,14">TATA ACE,14</option><option value="TATA INTRA,12">TATA INTRA,12</option><option value="PICKUP,10">PICKUP,10</option><option value="10 FT,8.5">10 FT,8.5</option><option value="14 FT,7">14 FT,7</option><option value="16 FT,7">16 FT,7</option><option value="20 FT,6.5">20 FT,6.5</option><option value="22 FT,6">22 FT,6</option><option value="24 FT,5.5">24 FT,5.5</option><option value="32 FT,4">32 FT,4</option><option value="407,8.5">407,8.5</option><option value="GENERATOR,1">GENERATOR,1</option>
-                </select>
-            </div>
-            <div class="form-group"><label for="fromLocation">📍 From Location<span class="required">*</span></label><input type="text" id="fromLocation" required></div>
-            <div class="form-group"><label for="lastLocation">📍 Last Location<span class="required">*</span></label><input type="text" id="lastLocation" required></div>
-            <div class="form-group"><label for="currentKm">📊 Current KM</label><input type="number" id="currentKm"></div>
-            <div class="form-group"><label for="diesel">💸 Diesel (₹)<span class="required">*</span></label><input type="number" id="diesel" required></div>
-            <div class="form-group"><label for="vendorName">👮🏻 Vendor Name<span class="required">*</span></label>
-                <select id="vendorName" required>
-                    <option value="">Select Vendor</option>
-                    <option value="RPM LOGISTICS PVT.LTD.">RPM LOGISTICS PVT.LTD.</option>
-                    <option value="MASS ENTERPRISES.">MASS ENTERPRISES.</option>
-                    <option value="SHREE DATTA KRUPA">SHREE DATTA KRUPA</option>
-                    <option value="SKYTRACK">SKYTRACK</option>
-                    <option value="AMOL MAHADIK">AMOL MAHADIK</option>
-                    <option value="ANAND TRANSPORT">ANAND TRANSPORT</option>
-                    <option value="RAJ TRANSPORT">RAJ TRANSPORT</option>
-                    <option value="KOLKATA CHENNAI ROADLINE">KOLKATA CHENNAI ROADLINE</option>
-                    <option value="SARTHAK TRANSPORT.">SARTHAK TRANSPORT.</option>
-                </select>
-            </div>
-            <div class="form-group"><label for="note">📝 Note</label><input type="text" id="note"></div>
-            <button type="submit" class="submit-btn">
-                <span class="submit-btn-text">SUBMIT</span>
-                <span class="loader"></span>
-                <span class="checkmark">✓</span>
-                <div class="progress-bar"></div>
-            </button>
-        </form>
-        <div class="footer">⛽ Diesel usage par nazar rakhi jaati hai, galat istemal par jawabdehi hogi.
+<div class="form-container">
+<div class="header">
+<img src="https://rpm.gt.tc/logo.png" alt="RPM Logo" class="logo">
+<div class="title">Diesel Voucher</div>
 </div>
-    </div>
-    <button class="fab" id="openCalculator">⚙️</button>
-    <div class="calculator-modal" id="calculatorModal">
-        <div class="calculator-container">
-            <div class="calculator-close" id="closeCalculator">×</div>
-            <div class="calculator-header">Diesel Calculator</div>
-            <div class="form-group">
-                <label for="calcVehicleTypeTrip">🚚 Vehicle Type<span class="required">*</span></label>
-                <select id="calcVehicleTypeTrip" required>
-                    <option value="">Select Vehicle Type</option>
-                    <option value="BUS">BUS</option><option value="TATA ACE">TATA ACE</option><option value="TATA INTRA">TATA INTRA</option><option value="PICKUP">PICKUP</option><option value="10 FT">10 FT</option><option value="14 FT">14 FT</option><option value="16 FT">16 FT</option><option value="20 FT">20 FT</option><option value="22 FT">22 FT</option><option value="24 FT">24 FT</option><option value="32 FT">32 FT</option><option value="407">407</option><option value="GENERATOR">GENERATOR</option>
-                </select>
-            </div>
-            <div class="form-group"><label for="startKm">Start KM<span class="required">*</span></label><input type="number" id="startKm" required placeholder="e.g. 125000"></div>
-            <div class="form-group"><label for="endKm">End KM<span class="required">*</span></label><input type="number" id="endKm" required placeholder="e.g. 125450"></div>
-            <div class="form-group"><label for="dieselPriceTrip">⛽ Diesel Price per Liter (₹)<span class="required">*</span></label><input type="number" id="dieselPriceTrip" value="90" step="0.01" required></div>
-            <div class="form-group"><label for="prevDiesel">💰 Previous Diesel Amount (₹)<span class="required">*</span></label><input type="number" id="prevDiesel" required placeholder="e.g. 5000"></div>
-            <div class="calculator-result" id="calcResult"><div>Enter values to calculate</div></div>
-        </div>
-    </div>
-    <script>
-        const VEHICLE_MILEAGE={"BUS":6,"TATA ACE":14,"TATA INTRA":12,"PICKUP":10,"10 FT":8.5,"14 FT":7,"16 FT":7,"20 FT":6.5,"22 FT":6,"24 FT":5.5,"32 FT":4,"407":8.5,"GENERATOR":1};
-        function calculateTripDistance(s,e,t,p,r){if(e<=s)throw new Error("End KM must be greater than Start KM");const m=VEHICLE_MILEAGE[t];if(!m)throw new Error("Invalid vehicle type");const d=e-s,l=d/m,c=l*p;let x=null,a=null;if(r>0){const pl=r/p;x=pl-l;a=x*p}return{totalKm:+d.toFixed(2),dieselUsed:+l.toFixed(2),dieselCost:+c.toFixed(2),extraDiesel:x!==null?+x.toFixed(2):null,extraDieselPrice:a!==null?+a.toFixed(2):null}}
-        document.getElementById('vehicleNo').addEventListener('input',e=>e.target.value=e.target.value.toUpperCase().replace(/\s/g,''));
-        document.querySelector('.submit-btn').addEventListener('click',e=>{const r=document.createElement('span');r.classList.add('ripple-effect');const b=e.currentTarget.getBoundingClientRect();r.style.left=(e.clientX-b.left)+'px';r.style.top=(e.clientY-b.top)+'px';e.currentTarget.appendChild(r);setTimeout(()=>r.remove(),600)});
-        document.getElementById('dieselForm').addEventListener('submit',e=>{e.preventDefault();const n=new Date(),dt=`${String(n.getDate()).padStart(2,'0')}-${String(n.getMonth()+1).padStart(2,'0')}-${n.getFullYear()},${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;const req=['vehicleNo','vehicleType','fromLocation','lastLocation','diesel','vendorName'];if(!req.every(id=>document.getElementById(id).value.trim())){alert("Please fill all required fields.");return}const rid=Math.floor(10000+Math.random()*90000),v={vn:document.getElementById('vehicleNo').value,vt:document.getElementById('vehicleType').value,from:document.getElementById('fromLocation').value,last:document.getElementById('lastLocation').value,km:document.getElementById('currentKm').value.trim(),diesel:document.getElementById('diesel').value,vendor:document.getElementById('vendorName').value,note:document.getElementById('note').value.trim()};let msg=`🔔Diesel Request📢\nResponse #${rid}\n📅 Date & Time. : ${dt}\n🚛 Vehicle No. : ${v.vn}\n🚚 Vehicle Type. : ${v.vt}\n📍 From Location. : ${v.from}\n📍Last Location. : ${v.last}`;if(v.km)msg+=`\n📊 Current KM. : ${v.km}`;msg+=`\n💸 Diesel (₹ INR). : ${v.diesel}\n👮🏻 Vendor Name. : ${v.vendor}`;if(v.note)msg+=`\n📝 Note. : ${v.note}`;const btn=document.querySelector('.submit-btn');btn.classList.add('animating');setTimeout(()=>{btn.classList.remove('animating');btn.classList.add('success');setTimeout(()=>{window.open(`https://wa.me/916206494170?text=${encodeURIComponent(msg)}`,'_blank');btn.classList.remove('success');setTimeout(()=>{location.reload()},1000)},800)},1800)});
-        const modal=document.getElementById('calculatorModal');
-        document.getElementById('openCalculator').addEventListener('click',()=>modal.classList.add('active'));
-        document.getElementById('closeCalculator').addEventListener('click',()=>modal.classList.remove('active'));
-        modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('active')});
-        document.querySelectorAll('#calculatorModal input,#calculatorModal select').forEach(i=>i.addEventListener('input',()=>{const v=document.getElementById('calcVehicleTypeTrip').value,s=parseFloat(document.getElementById('startKm').value),e=parseFloat(document.getElementById('endKm').value),p=parseFloat(document.getElementById('dieselPriceTrip').value),pr=parseFloat(document.getElementById('prevDiesel').value);const res=document.getElementById('calcResult');if(!v||isNaN(s)||isNaN(e)||isNaN(p)||p<=0||isNaN(pr)||pr<0){res.innerHTML='<div>Fill all required fields correctly</div>';return}try{const r=calculateTripDistance(s,e,v,p,pr);let h=`<div class="result-line"><span class="result-label">Total Distance Travelled:</span><span class="result-value">${r.totalKm} KM</span></div><div class="result-line"><span class="result-label">Diesel Used:</span><span class="result-value">${r.dieselUsed} L</span></div><div class="result-line"><span class="result-label">Estimated Cost:</span><span class="result-value">₹${r.dieselCost}</span></div>`;if(r.extraDieselPrice!==null){const isDue=r.extraDieselPrice>0;const sign=isDue?'+':'-';const amount=Math.abs(r.extraDieselPrice);const colorClass=isDue?'due':'credit';h+=`<div class="result-line"><span class="result-label">Due Amount:</span><span class="result-value ${colorClass}">${sign}₹${amount}</span></div>`}res.innerHTML=h}catch(err){res.innerHTML=`<div style="color:#dc2626;">${err.message}</div>`}}));
-        window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e});
-    </script>
+<form id="dieselForm">
+<div class="form-group"><label for="vehicleNo">🚛 Vehicle No<span class="required">*</span></label><input type="text" id="vehicleNo" required></div>
+<div class="form-group"><label for="vehicleType">🚚 Vehicle Type<span class="required">*</span></label>
+<select id="vehicleType" required>
+<option value="">Select Vehicle Type</option>
+<option value="BUS,6">BUS,6</option><option value="TATA ACE,14">TATA ACE,14</option><option value="TATA INTRA,12">TATA INTRA,12</option><option value="PICKUP,10">PICKUP,10</option><option value="10 FT,8.5">10 FT,8.5</option><option value="14 FT,7">14 FT,7</option><option value="16 FT,7">16 FT,7</option><option value="20 FT,6.5">20 FT,6.5</option><option value="22 FT,6">22 FT,6</option><option value="24 FT,5.5">24 FT,5.5</option><option value="32 FT,4">32 FT,4</option><option value="407,8.5">407,8.5</option><option value="GENERATOR,1">GENERATOR,1</option>
+</select>
+</div>
+<div class="form-group"><label for="fromLocation">📍 From Location<span class="required">*</span></label><input type="text" id="fromLocation" required></div>
+<div class="form-group"><label for="lastLocation">📍 Last Location<span class="required">*</span></label><input type="text" id="lastLocation" required></div>
+<div class="form-group"><label for="currentKm">📊 Current KM</label><input type="number" id="currentKm"></div>
+<div class="form-group"><label for="diesel">💸 Diesel (₹)<span class="required">*</span></label><input type="number" id="diesel" required></div>
+<div class="form-group"><label for="vendorName">👮🏻 Vendor Name<span class="required">*</span></label>
+<select id="vendorName" required>
+<option value="">Select Vendor</option>
+<option value="RPM LOGISTICS PVT.LTD.">RPM LOGISTICS PVT.LTD.</option>
+<option value="MASS ENTERPRISES.">MASS ENTERPRISES.</option>
+<option value="SHREE DATTA KRUPA">SHREE DATTA KRUPA</option>
+<option value="SKYTRACK">SKYTRACK</option>
+<option value="AMOL MAHADIK">AMOL MAHADIK</option>
+<option value="ANAND TRANSPORT">ANAND TRANSPORT</option>
+<option value="RAJ TRANSPORT">RAJ TRANSPORT</option>
+<option value="KOLKATA CHENNAI ROADLINE">KOLKATA CHENNAI ROADLINE</option>
+<option value="SARTHAK TRANSPORT.">SARTHAK TRANSPORT.</option>
+</select>
+</div>
+<div class="form-group"><label for="note">📝 Note</label><input type="text" id="note"></div>
+<button type="submit" class="submit-btn">
+<span class="submit-btn-text">SUBMIT</span>
+<span class="loader"></span>
+<span class="checkmark">✓</span>
+</button>
+</form>
+<div class="footer">⛽ Diesel usage par nazar rakhi jaati hai, galat istemal par jawabdehi hogi.</div>
+</div>
+<button class="fab" id="openCalculator">⚙️</button>
+<div class="calculator-modal" id="calculatorModal">
+<div class="calculator-container">
+<div class="calculator-close" id="closeCalculator">×</div>
+<div class="calculator-header">Diesel Calculator</div>
+<div class="form-group">
+<label for="calcVehicleTypeTrip">🚚 Vehicle Type<span class="required">*</span></label>
+<select id="calcVehicleTypeTrip" required>
+<option value="">Select Vehicle Type</option>
+<option value="BUS">BUS</option><option value="TATA ACE">TATA ACE</option><option value="TATA INTRA">TATA INTRA</option><option value="PICKUP">PICKUP</option><option value="10 FT">10 FT</option><option value="14 FT">14 FT</option><option value="16 FT">16 FT</option><option value="20 FT">20 FT</option><option value="22 FT">22 FT</option><option value="24 FT">24 FT</option><option value="32 FT">32 FT</option><option value="407">407</option><option value="GENERATOR">GENERATOR</option>
+</select>
+</div>
+<div class="form-group"><label for="startKm">Start KM<span class="required">*</span></label><input type="number" id="startKm" required placeholder="e.g. 125000"></div>
+<div class="form-group"><label for="endKm">End KM<span class="required">*</span></label><input type="number" id="endKm" required placeholder="e.g. 125450"></div>
+<div class="form-group"><label for="dieselPriceTrip">⛽ Diesel Price per Liter (₹)<span class="required">*</span></label><input type="number" id="dieselPriceTrip" value="90" step="0.01" required></div>
+<div class="form-group"><label for="prevDiesel">💰 Previous Diesel Amount (₹)<span class="required">*</span></label><input type="number" id="prevDiesel" required placeholder="e.g. 5000"></div>
+<div class="calculator-result" id="calcResult"><div>Enter values to calculate</div></div>
+</div>
+</div>
+<script>
+const VEHICLE_MILEAGE={"BUS":6,"TATA ACE":14,"TATA INTRA":12,"PICKUP":10,"10 FT":8.5,"14 FT":7,"16 FT":7,"20 FT":6.5,"22 FT":6,"24 FT":5.5,"32 FT":4,"407":8.5,"GENERATOR":1};
+function calculateTripDistance(s,e,t,p,r){if(e<=s)throw new Error("End KM must be greater than Start KM");const m=VEHICLE_MILEAGE[t];if(!m)throw new Error("Invalid vehicle type");const d=e-s,l=d/m,c=l*p;let x=null,a=null;if(r>0){const pl=r/p;x=pl-l;a=x*p}return{totalKm:+d.toFixed(2),dieselUsed:+l.toFixed(2),dieselCost:+c.toFixed(2),extraDiesel:x!==null?+x.toFixed(2):null,extraDieselPrice:a!==null?+a.toFixed(2):null}}
+document.getElementById('vehicleNo').addEventListener('input',e=>e.target.value=e.target.value.toUpperCase().replace(/\s/g,''));
+document.querySelector('.submit-btn').addEventListener('click',e=>{const r=document.createElement('span');r.classList.add('ripple-effect');const b=e.currentTarget.getBoundingClientRect();r.style.left=(e.clientX-b.left)+'px';r.style.top=(e.clientY-b.top)+'px';e.currentTarget.appendChild(r);setTimeout(()=>r.remove(),600)});
+document.getElementById('dieselForm').addEventListener('submit',e=>{e.preventDefault();const n=new Date(),dt=`${String(n.getDate()).padStart(2,'0')}-${String(n.getMonth()+1).padStart(2,'0')}-${n.getFullYear()},${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;const req=['vehicleNo','vehicleType','fromLocation','lastLocation','diesel','vendorName'];if(!req.every(id=>document.getElementById(id).value.trim())){alert("Please fill all required fields.");return}const rid=Math.floor(10000+Math.random()*90000),v={vn:document.getElementById('vehicleNo').value,vt:document.getElementById('vehicleType').value,from:document.getElementById('fromLocation').value,last:document.getElementById('lastLocation').value,km:document.getElementById('currentKm').value.trim(),diesel:document.getElementById('diesel').value,vendor:document.getElementById('vendorName').value,note:document.getElementById('note').value.trim()};let msg=`🔔Diesel Request📢\nResponse #${rid}\n📅 Date & Time. : ${dt}\n🚛 Vehicle No. : ${v.vn}\n🚚 Vehicle Type. : ${v.vt}\n📍 From Location. : ${v.from}\n📍Last Location. : ${v.last}`;if(v.km)msg+=`\n📊 Current KM. : ${v.km}`;msg+=`\n💸 Diesel (₹ INR). : ${v.diesel}\n👮🏻 Vendor Name. : ${v.vendor}`;if(v.note)msg+=`\n📝 Note. : ${v.note}`;const btn=document.querySelector('.submit-btn');btn.classList.add('animating');setTimeout(()=>{btn.classList.remove('animating');btn.classList.add('success');setTimeout(()=>{window.open(`https://wa.me/916206494170?text=${encodeURIComponent(msg)}`,'_blank');btn.classList.remove('success');setTimeout(()=>{location.reload()},1000)},800)},1800)});
+const modal=document.getElementById('calculatorModal');
+document.getElementById('openCalculator').addEventListener('click',()=>modal.classList.add('active'));
+document.getElementById('closeCalculator').addEventListener('click',()=>modal.classList.remove('active'));
+modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('active')});
+document.querySelectorAll('#calculatorModal input,#calculatorModal select').forEach(i=>i.addEventListener('input',()=>{const v=document.getElementById('calcVehicleTypeTrip').value,s=parseFloat(document.getElementById('startKm').value),e=parseFloat(document.getElementById('endKm').value),p=parseFloat(document.getElementById('dieselPriceTrip').value),pr=parseFloat(document.getElementById('prevDiesel').value);const res=document.getElementById('calcResult');if(!v||isNaN(s)||isNaN(e)||isNaN(p)||p<=0||isNaN(pr)||pr<0){res.innerHTML='<div>Fill all required fields correctly</div>';return}try{const r=calculateTripDistance(s,e,v,p,pr);let h=`<div class="result-line"><span class="result-label">Total Distance Travelled:</span><span class="result-value">${r.totalKm} KM</span></div><div class="result-line"><span class="result-label">Diesel Used:</span><span class="result-value">${r.dieselUsed} L</span></div><div class="result-line"><span class="result-label">Estimated Cost:</span><span class="result-value">₹${r.dieselCost}</span></div>`;if(r.extraDieselPrice!==null){const isDue=r.extraDieselPrice>0;const sign=isDue?'+':'-';const amount=Math.abs(r.extraDieselPrice);const colorClass=isDue?'due':'credit';h+=`<div class="result-line"><span class="result-label">Due Amount:</span><span class="result-value ${colorClass}">${sign}₹${amount}</span></div>`}res.innerHTML=h}catch(err){res.innerHTML=`<div style="color:#dc2626;">${err.message}</div>`}}));
+</script>
 </body>
 </html>
