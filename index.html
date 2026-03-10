@@ -141,16 +141,8 @@ background:var(--white);
 box-shadow:0 0 0 3px rgba(59,130,246,.13);
 }
 .f::placeholder{color:var(--muted);font-weight:400;font-size:14px}
-select.f{
-background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%239ca3af' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-background-repeat:no-repeat;background-position:right 12px center;background-size:11px 7px;
-padding-right:34px;cursor:pointer;
-}
-select.f:focus{
-border-color:var(--focus);
-background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%233b82f6' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-background-size:11px 7px;
-}
+select.f{background-image:none;cursor:pointer}
+select.f:focus{border-color:var(--focus)}
 select.f option{background:#fff;color:var(--ink)}
 
 /* KM row — two cols only for this */
