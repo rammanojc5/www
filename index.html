@@ -2,358 +2,461 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>Diesel Voucher · RPM</title>
-<meta name="theme-color" content="#f8f5f0">
+<meta name="theme-color" content="#ffffff">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Diesel Voucher">
 <link rel="preload" as="image" href="https://rpm.gt.tc/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
---bg:#f0ebe3;
---card:#fffdf9;
---card2:#f7f3ee;
---border:#e2d9ce;
---ink:#1c1a17;
---ink2:#4a4540;
---muted:#9a9088;
---accent:#e05c2a;
---accent2:#c44d1f;
---green:#1d8a5e;
---red:#d63031;
---red-bg:#ffeaea;
---gold:#c9860a;
---sh1:0 2px 8px rgba(60,40,20,.08);
---sh2:0 8px 32px rgba(60,40,20,.12);
---sh3:0 24px 64px rgba(60,40,20,.18);
+--bg:#f4f6f9;
+--white:#ffffff;
+--surface:#f9fafb;
+--border:#e8ecf0;
+--border-focus:#3b82f6;
+--ink:#0f172a;
+--ink2:#475569;
+--muted:#94a3b8;
+--accent:#f97316;
+--accent-d:#ea6c0a;
+--accent-bg:#fff7ed;
+--green:#16a34a;
+--green-bg:#f0fdf4;
+--red:#dc2626;
+--red-bg:#fef2f2;
+--blue:#3b82f6;
+--shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+--shadow-md:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.04);
+--shadow-lg:0 12px 40px rgba(0,0,0,.1),0 4px 12px rgba(0,0,0,.05);
+--r:14px;
+--r-sm:10px;
+--font:'Plus Jakarta Sans',sans-serif;
 }
-html{scroll-behavior:smooth}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{
-font-family:'DM Sans',sans-serif;
-background:var(--bg);
-background-image:
-  radial-gradient(ellipse at 15% 90%,rgba(224,92,42,.08) 0%,transparent 45%),
-  radial-gradient(ellipse at 88% 8%,rgba(201,134,10,.07) 0%,transparent 42%),
-  url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='.8' fill='%23b8a898' fill-opacity='.18'/%3E%3C/svg%3E");
-min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:24px 16px 60px;
+font-family:var(--font);background:var(--bg);
+min-height:100vh;min-height:100dvh;
+display:flex;flex-direction:column;align-items:center;
+padding:0 0 32px;
 }
-.w{width:100%;max-width:440px}
+.page{width:100%;max-width:480px;padding:0 16px}
+
+/* ── TOP BAR ── */
+.topbar{
+width:100%;max-width:480px;
+background:var(--white);
+border-bottom:1px solid var(--border);
+padding:12px 20px;
+display:flex;align-items:center;gap:12px;
+position:sticky;top:0;z-index:50;
+box-shadow:var(--shadow-sm);
+animation:slideDown .4s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+.topbar-logo{
+width:38px;height:38px;border-radius:10px;
+object-fit:contain;background:var(--accent-bg);padding:4px;
+flex-shrink:0;
+}
+.topbar-text{}
+.topbar-title{font-size:16px;font-weight:800;color:var(--ink);line-height:1.1}
+.topbar-title span{color:var(--accent)}
+.topbar-sub{font-size:11px;color:var(--muted);font-weight:500;margin-top:1px;display:flex;align-items:center;gap:5px}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 2s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.topbar-calc{
+margin-left:auto;width:38px;height:38px;border-radius:10px;
+background:var(--surface);border:1px solid var(--border);
+display:flex;align-items:center;justify-content:center;
+font-size:18px;cursor:pointer;flex-shrink:0;
+transition:background .2s,border-color .2s,transform .2s;
+}
+.topbar-calc:hover{background:var(--accent-bg);border-color:var(--accent);transform:rotate(20deg)}
+
+/* ── PROGRESS BAR ── */
+.progress-bar{
+width:100%;height:3px;
+background:linear-gradient(90deg,var(--accent),#fbbf24,var(--accent));
+background-size:200%;
+animation:flow 2.5s linear infinite;
+}
+@keyframes flow{0%{background-position:0%}100%{background-position:200%}}
+
+/* ── CARD ── */
 .card{
-background:var(--card);border:1px solid var(--border);border-radius:28px;
-box-shadow:var(--sh3);overflow:hidden;
-animation:cardIn .65s cubic-bezier(.22,1,.36,1) both;
+background:var(--white);border-radius:20px;
+border:1px solid var(--border);
+box-shadow:var(--shadow-md);
+margin-top:16px;overflow:hidden;
+animation:cardUp .5s cubic-bezier(.22,1,.36,1) .1s both;
 }
-@keyframes cardIn{from{opacity:0;transform:translateY(32px) scale(.96)}to{opacity:1;transform:none}}
-.strip{
-height:4px;
-background:linear-gradient(90deg,var(--gold) 0%,var(--accent) 35%,#f59e0b 65%,var(--accent) 100%);
-background-size:300%;animation:stripAnim 3.5s linear infinite;
+@keyframes cardUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.card-section{padding:16px 18px 4px}
+.card-section+.card-section{border-top:1px solid var(--border);padding-top:16px}
+
+/* ── SECTION LABEL ── */
+.slabel{
+font-size:10px;font-weight:700;letter-spacing:2px;
+text-transform:uppercase;color:var(--muted);
+margin-bottom:12px;display:flex;align-items:center;gap:8px;
 }
-@keyframes stripAnim{0%{background-position:0%}100%{background-position:300%}}
-.hdr{
-padding:26px 28px 22px;display:flex;align-items:center;gap:18px;
-border-bottom:1px solid var(--border);background:var(--card2);
+.slabel-icon{
+width:22px;height:22px;border-radius:6px;
+background:var(--accent-bg);display:flex;align-items:center;justify-content:center;
+font-size:12px;flex-shrink:0;
 }
-.logo-ring{position:relative;width:68px;height:68px;flex-shrink:0}
-.logo-ring::before{
-content:'';position:absolute;inset:-4px;border-radius:50%;
-background:conic-gradient(from 0deg,var(--accent),var(--gold),#f59e0b,var(--accent));
-animation:rotate 5s linear infinite;
-}
-@keyframes rotate{to{transform:rotate(360deg)}}
-.logo-ring::after{content:'';position:absolute;inset:2px;border-radius:50%;background:var(--card2)}
-.logo{position:relative;z-index:1;width:64px;height:64px;border-radius:50%;object-fit:contain;padding:8px;background:var(--card2)}
-.hdr-text .name{font-family:'Syne',sans-serif;font-size:25px;font-weight:800;color:var(--ink);letter-spacing:.3px}
-.hdr-text .name em{color:var(--accent);font-style:normal}
-.hdr-text .sub{font-size:11px;color:var(--muted);letter-spacing:1.8px;text-transform:uppercase;margin-top:4px;font-weight:500;display:flex;align-items:center;gap:6px}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.75)}}
-.body{padding:22px 22px 18px}
-.sec{
-font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
-letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);
-margin:18px 0 10px;display:flex;align-items:center;gap:8px;
-}
-.sec::after{content:'';flex:1;height:1px;background:var(--border)}
-.fg{margin-bottom:13px;animation:fgIn .45s cubic-bezier(.22,1,.36,1) both}
-.fg:nth-child(1){animation-delay:.04s}.fg:nth-child(2){animation-delay:.08s}
-.fg:nth-child(3){animation-delay:.12s}.fg:nth-child(4){animation-delay:.16s}
-.fg:nth-child(5){animation-delay:.2s}.fg:nth-child(6){animation-delay:.24s}
-.fg:nth-child(7){animation-delay:.28s}.fg:nth-child(8){animation-delay:.32s}
-.fg:nth-child(9){animation-delay:.36s}
-@keyframes fgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ── FORM GROUP ── */
+.fg{margin-bottom:12px}
+.fg:last-child{margin-bottom:4px}
 label{
-display:flex;align-items:center;gap:5px;
-font-size:11px;font-weight:600;color:var(--ink2);
-letter-spacing:.7px;margin-bottom:6px;text-transform:uppercase;
+display:block;font-size:12px;font-weight:600;
+color:var(--ink2);margin-bottom:5px;letter-spacing:.2px;
 }
-.req{color:var(--accent);font-size:15px;line-height:1}
+.req{color:var(--accent);margin-left:2px}
+
+/* ── INPUTS ── */
 .f{
-width:100%;padding:11px 14px;background:#fff;
-border:1.5px solid var(--border);border-radius:12px;
-color:var(--ink);font-size:15px;font-family:'DM Sans',sans-serif;
-transition:border-color .2s,box-shadow .2s,transform .15s;
+width:100%;height:46px;padding:0 14px;
+background:var(--surface);border:1.5px solid var(--border);
+border-radius:var(--r-sm);color:var(--ink);
+font-size:15px;font-family:var(--font);font-weight:500;
 -webkit-appearance:none;appearance:none;
+transition:border-color .18s,box-shadow .18s,background .18s;
 }
-.f:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(224,92,42,.1);transform:translateY(-1px)}
-.f::placeholder{color:rgba(154,144,136,.7)}
+.f:focus{
+outline:none;border-color:var(--border-focus);
+background:var(--white);
+box-shadow:0 0 0 3px rgba(59,130,246,.12);
+}
+.f::placeholder{color:var(--muted);font-weight:400}
+.f:disabled{opacity:.5;cursor:not-allowed}
 select.f{
-background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='8' viewBox='0 0 13 8'%3E%3Cpath d='M1 1l5.5 5.5L12 1' stroke='%23e05c2a' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-background-repeat:no-repeat;background-position:right 14px center;
-padding-right:40px;cursor:pointer;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394a3b8' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+background-repeat:no-repeat;background-position:right 12px center;
+padding-right:36px;cursor:pointer;
+}
+select.f:focus{
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%233b82f6' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 select.f option{background:#fff;color:var(--ink)}
-.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* ── SUBMIT BUTTON ── */
+.submit-wrap{padding:14px 18px 18px}
 .btn{
-width:100%;padding:17px;border:none;border-radius:16px;
-font-family:'Syne',sans-serif;font-size:17px;font-weight:800;
-letter-spacing:1.5px;cursor:pointer;
-background:linear-gradient(135deg,var(--accent),var(--accent2));
+width:100%;height:52px;border:none;border-radius:var(--r);
+font-family:var(--font);font-size:16px;font-weight:800;
+letter-spacing:.5px;cursor:pointer;
+background:linear-gradient(135deg,var(--accent) 0%,var(--accent-d) 100%);
 color:#fff;position:relative;overflow:hidden;
-transition:transform .2s,box-shadow .2s;
-box-shadow:0 6px 22px rgba(224,92,42,.42),0 2px 6px rgba(224,92,42,.2);
-display:flex;align-items:center;justify-content:center;gap:10px;
-margin-top:8px;
+transition:transform .18s,box-shadow .18s,opacity .18s;
+box-shadow:0 4px 16px rgba(249,115,22,.4),0 1px 4px rgba(249,115,22,.2);
+display:flex;align-items:center;justify-content:center;gap:8px;
 }
-.btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.18),transparent 55%)}
-.btn:hover:not([disabled]){transform:translateY(-2px);box-shadow:0 10px 30px rgba(224,92,42,.52),0 4px 10px rgba(224,92,42,.25)}
-.btn:active:not([disabled]){transform:translateY(1px)}
-.bico{font-size:21px;transition:transform .3s}
-.btn:hover .bico{transform:translateX(3px) rotate(-12deg)}
-.blabel{transition:opacity .15s}
-.bloader{display:none;position:absolute;inset:0;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
-.bloader.on{display:flex}
-.sp{width:20px;height:20px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;animation:sp .7s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-.blt{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;color:#fff;animation:pulse2 1s ease-in-out infinite}
-@keyframes pulse2{0%,100%{opacity:1}50%{opacity:.6}}
-.bsuccess{display:none;position:absolute;inset:0;align-items:center;justify-content:center;gap:10px;background:var(--green);border-radius:16px}
-.bsuccess.on{display:flex;animation:sIn .4s cubic-bezier(.22,1,.36,1)}
-@keyframes sIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
-.bst{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;letter-spacing:2px;color:#fff}
-.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.28);transform:scale(0);pointer-events:none;animation:rip .55s linear}
-@keyframes rip{to{transform:scale(5);opacity:0}}
-.note{
-margin:18px 0 0;padding:11px 16px;
-background:linear-gradient(135deg,rgba(224,92,42,.06),rgba(201,134,10,.05));
-border:1px solid rgba(224,92,42,.14);border-radius:13px;
-font-size:11.5px;color:var(--ink2);line-height:1.6;text-align:center;
+.btn::after{
+content:'';position:absolute;inset:0;
+background:linear-gradient(180deg,rgba(255,255,255,.14) 0%,transparent 100%);
+pointer-events:none;
 }
-.fab{
-position:fixed;top:20px;right:20px;width:48px;height:48px;border-radius:50%;
-background:var(--card);border:1.5px solid var(--border);font-size:22px;
-display:flex;align-items:center;justify-content:center;cursor:pointer;
-z-index:100;box-shadow:var(--sh2);transition:all .3s cubic-bezier(.22,1,.36,1);
+.btn:active{transform:scale(.98);box-shadow:0 2px 8px rgba(249,115,22,.35)}
+.btn:hover:not([disabled]){box-shadow:0 6px 24px rgba(249,115,22,.5),0 2px 6px rgba(249,115,22,.25)}
+.btn[disabled]{opacity:.7;cursor:not-allowed}
+.b-ico{font-size:20px;transition:transform .25s;position:relative;z-index:1}
+.btn:hover .b-ico{transform:translateX(2px)}
+.b-lbl{position:relative;z-index:1;transition:opacity .15s}
+.b-spin{display:none;position:absolute;inset:0;align-items:center;justify-content:center;gap:9px}
+.b-spin.on{display:flex}
+.spinner{
+width:20px;height:20px;border-radius:50%;
+border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;
+animation:spin .65s linear infinite;
 }
-.fab:hover{transform:scale(1.12) rotate(48deg);border-color:var(--accent);box-shadow:0 8px 24px rgba(224,92,42,.28)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.b-spin-txt{font-size:14px;font-weight:700;letter-spacing:1.5px;color:#fff;opacity:.9}
+.b-ok{display:none;position:absolute;inset:0;align-items:center;justify-content:center;gap:8px;background:var(--green);border-radius:var(--r)}
+.b-ok.on{display:flex;animation:okIn .35s cubic-bezier(.22,1,.36,1)}
+@keyframes okIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.b-ok-txt{font-size:15px;font-weight:800;letter-spacing:1px;color:#fff}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.3);transform:scale(0);pointer-events:none;animation:ripAnim .5s linear}
+@keyframes ripAnim{to{transform:scale(4.5);opacity:0}}
+
+/* ── FOOTER NOTE ── */
+.fnote{
+margin:0 16px 0;padding:11px 14px;
+background:var(--accent-bg);border:1px solid rgba(249,115,22,.2);
+border-radius:var(--r-sm);font-size:11.5px;color:var(--ink2);
+line-height:1.55;text-align:center;font-weight:500;
+animation:cardUp .5s cubic-bezier(.22,1,.36,1) .25s both;
+}
+
+/* ── MODAL OVERLAY ── */
 .ov{
 display:none;position:fixed;inset:0;
-background:rgba(28,26,23,.52);backdrop-filter:blur(7px);
-z-index:200;align-items:center;justify-content:center;padding:20px;
+background:rgba(15,23,42,.45);
+backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+z-index:300;align-items:flex-end;justify-content:center;
+padding:0;
 }
-.ov.on{display:flex;animation:fIn .25s ease}
-@keyframes fIn{from{opacity:0}to{opacity:1}}
+.ov.on{display:flex;animation:ovIn .22s ease}
+@keyframes ovIn{from{opacity:0}to{opacity:1}}
 .modal{
-background:var(--card);border:1px solid var(--border);
-border-radius:28px;box-shadow:var(--sh3);width:100%;max-width:420px;overflow:hidden;
-animation:mIn .35s cubic-bezier(.22,1,.36,1);
+background:var(--white);
+border-radius:24px 24px 0 0;
+width:100%;max-width:480px;
+overflow:hidden;
+animation:sheetUp .32s cubic-bezier(.22,1,.36,1);
+max-height:92dvh;overflow-y:auto;
 }
-@keyframes mIn{from{opacity:0;transform:translateY(32px) scale(.95)}to{opacity:1;transform:none}}
-.mstrip{height:3px;background:linear-gradient(90deg,var(--gold),var(--accent))}
-.mhdr{
-padding:18px 22px 15px;display:flex;align-items:center;
-justify-content:space-between;border-bottom:1px solid var(--border);background:var(--card2);
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{
+width:40px;height:4px;border-radius:2px;
+background:var(--border);margin:12px auto 0;
 }
-.mtitle{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:var(--ink)}
-.mtitle em{color:var(--accent);font-style:normal}
-.mclose{
-width:36px;height:36px;border-radius:50%;border:none;background:var(--bg);
-cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center;
-color:var(--muted);transition:all .2s;
+.modal-head{
+padding:14px 20px 12px;display:flex;align-items:center;
+justify-content:space-between;border-bottom:1px solid var(--border);
+position:sticky;top:0;background:var(--white);z-index:2;
 }
-.mclose:hover{background:var(--red-bg);color:var(--red)}
-.mbody{padding:18px 20px 20px}
-.cr{margin-top:16px;background:var(--card2);border:1px solid var(--border);border-radius:16px;overflow:hidden}
-.ce{padding:16px;text-align:center;color:var(--muted);font-size:13px;font-weight:500}
-.rrow{
+.modal-title{font-size:17px;font-weight:800;color:var(--ink)}
+.modal-title span{color:var(--accent)}
+.modal-close{
+width:34px;height:34px;border-radius:8px;border:none;
+background:var(--surface);cursor:pointer;font-size:20px;
+display:flex;align-items:center;justify-content:center;
+color:var(--ink2);transition:background .2s,color .2s;
+}
+.modal-close:hover{background:var(--red-bg);color:var(--red)}
+.modal-body{padding:16px 18px 28px}
+.calc-res{
+margin-top:14px;background:var(--surface);
+border:1px solid var(--border);border-radius:var(--r);
+overflow:hidden;
+}
+.calc-empty{padding:18px;text-align:center;color:var(--muted);font-size:13px;font-weight:500}
+.calc-row{
 display:flex;justify-content:space-between;align-items:center;
-padding:11px 16px;border-bottom:1px solid var(--border);transition:background .2s;
+padding:11px 16px;border-bottom:1px solid var(--border);
 }
-.rrow:last-child{border-bottom:none}
-.rrow:hover{background:rgba(224,92,42,.03)}
-.rk{font-size:13px;font-weight:600;color:var(--ink2)}
-.rv{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--ink)}
-.rv.due{color:var(--red)}.rv.cr2{color:var(--green)}.rv.neu{color:var(--gold)}
-.cerr{padding:14px 16px;color:var(--red);font-size:13px;font-weight:600;text-align:center}
-@media(max-width:400px){.r2{grid-template-columns:1fr}.fab{top:14px;right:14px;width:42px;height:42px;font-size:19px}}
+.calc-row:last-child{border-bottom:none}
+.calc-k{font-size:13px;font-weight:600;color:var(--ink2)}
+.calc-v{font-size:14px;font-weight:700;color:var(--ink)}
+.calc-v.due{color:var(--red)}.calc-v.credit{color:var(--green)}.calc-v.even{color:var(--muted)}
+.calc-err{padding:14px;color:var(--red);font-size:13px;font-weight:600;text-align:center}
+
+/* ── FIELD ANIMATIONS ── */
+.card-section .fg{animation:fgUp .4s cubic-bezier(.22,1,.36,1) both}
+.card-section:nth-child(1) .fg:nth-child(1){animation-delay:.12s}
+.card-section:nth-child(1) .fg:nth-child(2){animation-delay:.16s}
+.card-section:nth-child(2) .fg:nth-child(1){animation-delay:.2s}
+.card-section:nth-child(2) .fg:nth-child(2){animation-delay:.24s}
+.card-section:nth-child(2) .fg:nth-child(3){animation-delay:.28s}
+.card-section:nth-child(3) .fg:nth-child(1){animation-delay:.32s}
+.card-section:nth-child(3) .fg:nth-child(2){animation-delay:.36s}
+.card-section:nth-child(3) .fg:nth-child(3){animation-delay:.4s}
+@keyframes fgUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+@media(min-width:481px){
+  .ov{align-items:center;padding:20px}
+  .modal{border-radius:24px;max-height:88vh}
+  .modal-handle{display:none}
+  @keyframes sheetUp{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+}
+@media(max-width:360px){
+  .topbar{padding:10px 14px}
+  .card-section{padding:14px 14px 4px}
+  .submit-wrap{padding:12px 14px 16px}
+  .fnote{margin:0 14px}
+  .r2{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<div class="w">
-<div class="card">
-<div class="strip"></div>
-<div class="hdr">
-<div class="logo-ring">
-<img src="https://rpm.gt.tc/logo.png" alt="RPM" class="logo" loading="eager" fetchpriority="high" decoding="async">
-</div>
-<div class="hdr-text">
-<div class="name">Diesel <em>Voucher</em></div>
-<div class="sub"><span class="dot"></span>RPM Logistics · Fuel Mgmt</div>
-</div>
-</div>
-<div class="body">
-<form id="F" novalidate>
-<div class="sec">Vehicle Info</div>
-<div class="fg">
-<label>🚛 Vehicle No <span class="req">*</span></label>
-<input class="f" id="vno" type="text" placeholder="MH12AB1234" autocomplete="off" required>
-</div>
-<div class="fg">
-<label>🚚 Vehicle Type <span class="req">*</span></label>
-<select class="f" id="vtype" required>
-<option value="">Select Vehicle Type</option>
-<option value="BUS|6">BUS</option>
-<option value="TATA ACE|14">TATA ACE</option>
-<option value="TATA INTRA|12">TATA INTRA</option>
-<option value="PICKUP|10">PICKUP</option>
-<option value="10 FT|8.5">10 FT</option>
-<option value="14 FT|7">14 FT</option>
-<option value="16 FT|7">16 FT</option>
-<option value="20 FT|6.5">20 FT</option>
-<option value="22 FT|6">22 FT</option>
-<option value="24 FT|5.5">24 FT</option>
-<option value="32 FT|4">32 FT</option>
-<option value="407|8.5">407</option>
-<option value="GENERATOR|1">GENERATOR</option>
-</select>
-</div>
-<div class="sec">Route</div>
-<div class="r2">
-<div class="fg">
-<label>📍 From <span class="req">*</span></label>
-<input class="f" id="from" type="text" placeholder="Departure" required>
-</div>
-<div class="fg">
-<label>🏁 To <span class="req">*</span></label>
-<input class="f" id="last" type="text" placeholder="Destination" required>
-</div>
-</div>
-<div class="fg">
-<label>📊 Odometer KM</label>
-<input class="f" id="km" type="number" placeholder="Current reading">
-</div>
-<div class="sec">Payment</div>
-<div class="fg">
-<label>💸 Diesel Amount (₹) <span class="req">*</span></label>
-<input class="f" id="diesel" type="number" placeholder="Amount in ₹" required>
-</div>
-<div class="fg">
-<label>🏢 Vendor <span class="req">*</span></label>
-<select class="f" id="vendor" required>
-<option value="">Select Vendor</option>
-<option>RPM LOGISTICS PVT.LTD.</option>
-<option>MASS ENTERPRISES.</option>
-<option>JK TRANSPORT.</option>
-<option>SHREE DATTA KRUPA</option>
-<option>SKYTRACK</option>
-<option>AMOL MAHADIK</option>
-<option>ANAND TRANSPORT</option>
-<option>RAJ TRANSPORT</option>
-<option>KOLKATA CHENNAI ROADLINE</option>
-<option>SARTHAK TRANSPORT.</option>
-<option>SHAIKH MEHBOOB KASHIM</option>
-</select>
-</div>
-<div class="fg">
-<label>📝 Note</label>
-<input class="f" id="note" type="text" placeholder="Optional remarks">
-</div>
-<button type="submit" class="btn" id="SB">
-<span class="bico">📤</span>
-<span class="blabel">SEND VOUCHER</span>
-<div class="bloader" id="BL"><div class="sp"></div><span class="blt">SENDING…</span></div>
-<div class="bsuccess" id="BS"><span style="font-size:22px">✅</span><span class="bst">VOUCHER SENT!</span></div>
-</button>
-</form>
-<div class="note">⚠️ Diesel usage par nazar rakhi jaati hai — galat istemal par jawabdehi hogi.</div>
-</div>
-</div>
+
+<div class="progress-bar"></div>
+
+<div class="topbar">
+  <img src="https://rpm.gt.tc/logo.png" alt="RPM" class="topbar-logo" loading="eager" fetchpriority="high" decoding="async">
+  <div class="topbar-text">
+    <div class="topbar-title">Diesel <span>Voucher</span></div>
+    <div class="topbar-sub"><span class="live-dot"></span>RPM Logistics · Fuel Mgmt</div>
+  </div>
+  <button class="topbar-calc" id="FAB" type="button" aria-label="Open Calculator">⚙️</button>
 </div>
 
-<button class="fab" id="FAB">⚙️</button>
+<div class="page">
+  <div class="card">
+    <form id="F" novalidate>
+
+      <div class="card-section">
+        <div class="slabel"><span class="slabel-icon">🚛</span>Vehicle Info</div>
+        <div class="fg">
+          <label>Vehicle No<span class="req">*</span></label>
+          <input class="f" id="vno" type="text" placeholder="MH12AB1234" autocomplete="off" inputmode="text" required>
+        </div>
+        <div class="fg">
+          <label>Vehicle Type<span class="req">*</span></label>
+          <select class="f" id="vtype" required>
+            <option value="">Select Vehicle Type</option>
+            <option value="BUS|6">BUS</option>
+            <option value="TATA ACE|14">TATA ACE</option>
+            <option value="TATA INTRA|12">TATA INTRA</option>
+            <option value="PICKUP|10">PICKUP</option>
+            <option value="10 FT|8.5">10 FT</option>
+            <option value="14 FT|7">14 FT</option>
+            <option value="16 FT|7">16 FT</option>
+            <option value="20 FT|6.5">20 FT</option>
+            <option value="22 FT|6">22 FT</option>
+            <option value="24 FT|5.5">24 FT</option>
+            <option value="32 FT|4">32 FT</option>
+            <option value="407|8.5">407</option>
+            <option value="GENERATOR|1">GENERATOR</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card-section">
+        <div class="slabel"><span class="slabel-icon">📍</span>Route</div>
+        <div class="r2">
+          <div class="fg">
+            <label>From Location<span class="req">*</span></label>
+            <input class="f" id="from" type="text" placeholder="Departure" required>
+          </div>
+          <div class="fg">
+            <label>Last Location<span class="req">*</span></label>
+            <input class="f" id="last" type="text" placeholder="Destination" required>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Current KM</label>
+          <input class="f" id="km" type="number" placeholder="Odometer reading" inputmode="numeric">
+        </div>
+      </div>
+
+      <div class="card-section">
+        <div class="slabel"><span class="slabel-icon">💸</span>Payment</div>
+        <div class="fg">
+          <label>Diesel Amount (₹)<span class="req">*</span></label>
+          <input class="f" id="diesel" type="number" placeholder="Amount in ₹" inputmode="numeric" required>
+        </div>
+        <div class="fg">
+          <label>Vendor Name<span class="req">*</span></label>
+          <select class="f" id="vendor" required>
+            <option value="">Select Vendor</option>
+            <option>RPM LOGISTICS PVT.LTD.</option>
+            <option>MASS ENTERPRISES.</option>
+            <option>JK TRANSPORT.</option>
+            <option>SHREE DATTA KRUPA</option>
+            <option>SKYTRACK</option>
+            <option>AMOL MAHADIK</option>
+            <option>ANAND TRANSPORT</option>
+            <option>RAJ TRANSPORT</option>
+            <option>KOLKATA CHENNAI ROADLINE</option>
+            <option>SARTHAK TRANSPORT.</option>
+            <option>SHAIKH MEHBOOB KASHIM</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Note</label>
+          <input class="f" id="note" type="text" placeholder="Optional remarks">
+        </div>
+      </div>
+
+      <div class="submit-wrap">
+        <button type="submit" class="btn" id="SB">
+          <span class="b-ico">📤</span>
+          <span class="b-lbl">SEND VOUCHER</span>
+          <div class="b-spin" id="BL">
+            <div class="spinner"></div>
+            <span class="b-spin-txt">SENDING…</span>
+          </div>
+          <div class="b-ok" id="BS">
+            <span style="font-size:20px">✅</span>
+            <span class="b-ok-txt">VOUCHER SENT!</span>
+          </div>
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="fnote" style="margin-top:12px">
+    ⚠️ Diesel usage par nazar rakhi jaati hai — galat istemal par jawabdehi hogi.
+  </div>
+</div>
 
 <div class="ov" id="OV">
-<div class="modal">
-<div class="mstrip"></div>
-<div class="mhdr">
-<div class="mtitle">⛽ Diesel <em>Calculator</em></div>
-<button class="mclose" id="MC" type="button">×</button>
-</div>
-<div class="mbody">
-<div class="fg">
-<label>🚚 Vehicle Type <span class="req">*</span></label>
-<select class="f" id="cvt">
-<option value="">Select Vehicle Type</option>
-<option value="BUS|6">BUS</option>
-<option value="TATA ACE|14">TATA ACE</option>
-<option value="TATA INTRA|12">TATA INTRA</option>
-<option value="PICKUP|10">PICKUP</option>
-<option value="10 FT|8.5">10 FT</option>
-<option value="14 FT|7">14 FT</option>
-<option value="16 FT|7">16 FT</option>
-<option value="20 FT|6.5">20 FT</option>
-<option value="22 FT|6">22 FT</option>
-<option value="24 FT|5.5">24 FT</option>
-<option value="32 FT|4">32 FT</option>
-<option value="407|8.5">407</option>
-<option value="GENERATOR|1">GENERATOR</option>
-</select>
-</div>
-<div class="r2">
-<div class="fg">
-<label>Start KM <span class="req">*</span></label>
-<input class="f" id="sk" type="number" placeholder="125000">
-</div>
-<div class="fg">
-<label>End KM <span class="req">*</span></label>
-<input class="f" id="ek" type="number" placeholder="125500">
-</div>
-</div>
-<div class="r2">
-<div class="fg">
-<label>₹ / Liter <span class="req">*</span></label>
-<input class="f" id="dp" type="number" value="90" step="0.01">
-</div>
-<div class="fg">
-<label>Prev. Amount (₹) <span class="req">*</span></label>
-<input class="f" id="pd" type="number" placeholder="5000">
-</div>
-</div>
-<div class="cr" id="CR"><div class="ce">Enter values above to calculate</div></div>
-</div>
-</div>
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <div class="modal-title">⛽ Diesel <span>Calculator</span></div>
+      <button class="modal-close" id="MC" type="button">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="fg">
+        <label>Vehicle Type<span class="req">*</span></label>
+        <select class="f" id="cvt">
+          <option value="">Select Vehicle Type</option>
+          <option value="BUS|6">BUS</option>
+          <option value="TATA ACE|14">TATA ACE</option>
+          <option value="TATA INTRA|12">TATA INTRA</option>
+          <option value="PICKUP|10">PICKUP</option>
+          <option value="10 FT|8.5">10 FT</option>
+          <option value="14 FT|7">14 FT</option>
+          <option value="16 FT|7">16 FT</option>
+          <option value="20 FT|6.5">20 FT</option>
+          <option value="22 FT|6">22 FT</option>
+          <option value="24 FT|5.5">24 FT</option>
+          <option value="32 FT|4">32 FT</option>
+          <option value="407|8.5">407</option>
+          <option value="GENERATOR|1">GENERATOR</option>
+        </select>
+      </div>
+      <div class="r2">
+        <div class="fg">
+          <label>Start KM<span class="req">*</span></label>
+          <input class="f" id="sk" type="number" placeholder="125000" inputmode="numeric">
+        </div>
+        <div class="fg">
+          <label>End KM<span class="req">*</span></label>
+          <input class="f" id="ek" type="number" placeholder="125500" inputmode="numeric">
+        </div>
+      </div>
+      <div class="r2">
+        <div class="fg">
+          <label>₹ per Liter<span class="req">*</span></label>
+          <input class="f" id="dp" type="number" value="90" step="0.01" inputmode="decimal">
+        </div>
+        <div class="fg">
+          <label>Prev. Amount (₹)<span class="req">*</span></label>
+          <input class="f" id="pd" type="number" placeholder="5000" inputmode="numeric">
+        </div>
+      </div>
+      <div class="calc-res" id="CR">
+        <div class="calc-empty">Enter values above to calculate</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
 (function(){
-var $=function(id){return document.getElementById(id)};
+var $=function(i){return document.getElementById(i)};
 var vno=$('vno'),vtype=$('vtype'),from=$('from'),last=$('last'),km=$('km'),diesel=$('diesel'),vendor=$('vendor'),note=$('note');
-var SB=$('SB'),BL=$('BL'),BS=$('BS'),FAB=$('FAB'),OV=$('OV'),MC=$('MC');
-var cvt=$('cvt'),sk=$('sk'),ek=$('ek'),dp=$('dp'),pd=$('pd'),CR=$('CR');
+var SB=$('SB'),BL=$('BL'),BS=$('BS'),OV=$('OV');
 
 vno.addEventListener('input',function(){this.value=this.value.toUpperCase().replace(/\s/g,'')});
 
 function ripple(btn,e){
   var r=document.createElement('span'),rect=btn.getBoundingClientRect(),s=Math.max(rect.width,rect.height);
-  r.className='ripple';
-  r.style.cssText='width:'+s+'px;height:'+s+'px;left:'+(e.clientX-rect.left-s/2)+'px;top:'+(e.clientY-rect.top-s/2)+'px';
-  btn.appendChild(r);
-  setTimeout(function(){r.remove()},600);
+  r.className='ripple';r.style.cssText='width:'+s+'px;height:'+s+'px;left:'+(e.clientX-rect.left-s/2)+'px;top:'+(e.clientY-rect.top-s/2)+'px';
+  btn.appendChild(r);setTimeout(function(){r.remove()},520);
 }
 
 $('F').addEventListener('submit',function(e){
@@ -378,21 +481,19 @@ $('F').addEventListener('submit',function(e){
   },1900);
 });
 
-FAB.addEventListener('click',function(){OV.classList.add('on')});
-MC.addEventListener('click',function(){OV.classList.remove('on')});
+$('FAB').addEventListener('click',function(){OV.classList.add('on')});
+$('MC').addEventListener('click',function(){OV.classList.remove('on')});
 OV.addEventListener('click',function(e){if(e.target===OV)OV.classList.remove('on')});
 
 function calc(){
-  var vv=cvt.value,s=parseFloat(sk.value),e=parseFloat(ek.value),p=parseFloat(dp.value),pr=parseFloat(pd.value);
-  if(!vv||isNaN(s)||isNaN(e)||isNaN(p)||p<=0||isNaN(pr)||pr<0){
-    CR.innerHTML='<div class="ce">Fill all fields correctly</div>';return;
-  }
-  if(e<=s){CR.innerHTML='<div class="cerr">⚠️ End KM must be greater than Start KM</div>';return;}
-  var ml=parseFloat(vv.split('|')[1]),tkm=e-s,lit=tkm/ml,cost=lit*p,pl=pr/p,ex=pl-lit,ea=ex*p;
-  var cls=ea<0?'due':ea>0?'cr2':'neu',lbl=ea<0?'Due Amount':'Credit Amount',sgn=ea<0?'−':'+';
-  CR.innerHTML='<div class="rrow"><span class="rk">Distance</span><span class="rv">'+tkm.toFixed(1)+' KM</span></div><div class="rrow"><span class="rk">Diesel Required</span><span class="rv">'+lit.toFixed(2)+' L</span></div><div class="rrow"><span class="rk">Estimated Cost</span><span class="rv">₹'+cost.toFixed(0)+'</span></div><div class="rrow"><span class="rk">'+lbl+'</span><span class="rv '+cls+'">'+sgn+'₹'+Math.abs(ea).toFixed(0)+'</span></div>';
+  var vv=$('cvt').value,s=parseFloat($('sk').value),e=parseFloat($('ek').value),p=parseFloat($('dp').value),pr=parseFloat($('pd').value),CR=$('CR');
+  if(!vv||isNaN(s)||isNaN(e)||isNaN(p)||p<=0||isNaN(pr)||pr<0){CR.innerHTML='<div class="calc-empty">Fill all fields correctly</div>';return;}
+  if(e<=s){CR.innerHTML='<div class="calc-err">⚠️ End KM must be greater than Start KM</div>';return;}
+  var ml=parseFloat(vv.split('|')[1]),tkm=e-s,lit=tkm/ml,cost=lit*p,ea=(pr/p-lit)*p;
+  var cls=ea<0?'due':ea>0?'credit':'even',lbl=ea<0?'Due Amount':'Credit Amount',sgn=ea<0?'−':'+';
+  CR.innerHTML='<div class="calc-row"><span class="calc-k">Distance Travelled</span><span class="calc-v">'+tkm.toFixed(1)+' KM</span></div><div class="calc-row"><span class="calc-k">Diesel Required</span><span class="calc-v">'+lit.toFixed(2)+' L</span></div><div class="calc-row"><span class="calc-k">Estimated Cost</span><span class="calc-v">₹'+cost.toFixed(0)+'</span></div><div class="calc-row"><span class="calc-k">'+lbl+'</span><span class="calc-v '+cls+'">'+sgn+'₹'+Math.abs(ea).toFixed(0)+'</span></div>';
 }
-[cvt,sk,ek,dp,pd].forEach(function(i){i.addEventListener('input',calc)});
+['cvt','sk','ek','dp','pd'].forEach(function(id){$(id).addEventListener('input',calc)});
 })();
 </script>
 </body>
