@@ -3,712 +3,396 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Diesel Voucher</title>
-<meta name="theme-color" content="#1a1a2e">
+<title>Diesel Voucher · RPM</title>
+<meta name="theme-color" content="#f8f5f0">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Diesel Voucher">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Diesel Voucher%22,%22short_name%22:%22Diesel%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22#1a1a2e%22,%22theme_color%22:%22#1a1a2e%22,%22icons%22:[{%22src%22:%22https://rpm.gt.tc/logo.png%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22},{%22src%22:%22https://rpm.gt.tc/logo.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0f0f1a;
-    --surface: #1a1a2e;
-    --card: #16213e;
-    --accent: #00d4aa;
-    --accent2: #f7971e;
-    --danger: #ff4757;
-    --success: #2ed573;
-    --text: #e8eaf6;
-    --muted: #8892b0;
-    --border: rgba(255,255,255,0.07);
-    --input-bg: #0f0f1a;
-    --glow: 0 0 20px rgba(0,212,170,0.25);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: var(--bg);
-    background-image:
-      radial-gradient(ellipse at 20% 20%, rgba(0,212,170,0.06) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 80%, rgba(247,151,30,0.05) 0%, transparent 50%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 20px 15px 40px;
-  }
-
-  .form-container {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 28px 22px;
-    border-radius: 24px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,170,0.05);
-    width: 100%;
-    max-width: 420px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .form-container::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent));
-    background-size: 200% 100%;
-    animation: shimmer 3s linear infinite;
-  }
-
-  @keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-  }
-
-  .header {
-    text-align: center;
-    margin-bottom: 28px;
-  }
-
-  .logo-wrap {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 14px;
-  }
-
-  .logo {
-    width: 80px; height: 80px;
-    object-fit: contain;
-    border-radius: 50%;
-    border: 3px solid var(--accent);
-    padding: 6px;
-    background: var(--surface);
-    box-shadow: 0 0 0 6px rgba(0,212,170,0.1), var(--glow);
-    display: block;
-  }
-
-  .fuel-badge {
-    position: absolute;
-    bottom: -4px; right: -4px;
-    background: var(--accent2);
-    width: 26px; height: 26px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px;
-    border: 2px solid var(--card);
-  }
-
-  .title {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .title span { color: var(--accent); }
-
-  .subtitle {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 1px;
-    margin-top: 2px;
-    text-transform: uppercase;
-  }
-
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 0 0 22px;
-  }
-
-  .form-group { margin-bottom: 16px; }
-
-  label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 7px;
-    font-weight: 600;
-    color: var(--muted);
-    font-size: 12px;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-  }
-
-  label .licon { font-size: 14px; }
-
-  .required { color: var(--danger); font-size: 14px; }
-
-  input, select {
-    width: 100%;
-    padding: 12px 14px;
-    background: var(--input-bg);
-    border: 1.5px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    color: var(--text);
-    font-size: 15px;
-    font-family: 'Nunito', sans-serif;
-    transition: border-color 0.25s, box-shadow 0.25s;
-    appearance: none;
-  }
-
-  select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300d4aa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    padding-right: 38px;
-  }
-
-  select option {
-    background: var(--surface);
-    color: var(--text);
-  }
-
-  input:focus, select:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(0,212,170,0.12);
-  }
-
-  input::placeholder { color: rgba(136,146,176,0.5); }
-
-  input[type=number]::-webkit-inner-spin-button { opacity: 0.3; }
-
-  /* SUBMIT BUTTON */
-  .submit-btn {
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, var(--accent) 0%, #00b894 100%);
-    color: #0f1923;
-    border: none;
-    border-radius: 14px;
-    font-size: 16px;
-    font-weight: 800;
-    font-family: 'Rajdhani', sans-serif;
-    letter-spacing: 2px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 6px 24px rgba(0,212,170,0.35);
-    margin-top: 8px;
-  }
-
-  .submit-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(0,212,170,0.5);
-  }
-
-  .submit-btn:active:not(:disabled) { transform: translateY(0); }
-
-  .submit-btn-icon { font-size: 20px; transition: transform 0.3s; }
-  .submit-btn:hover .submit-btn-icon { transform: translateX(3px); }
-
-  /* Loading state */
-  .submit-btn.loading {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    color: var(--accent);
-    pointer-events: none;
-    box-shadow: 0 0 0 2px var(--accent);
-  }
-
-  .submit-btn.loading .submit-btn-text,
-  .submit-btn.loading .submit-btn-icon { opacity: 0; }
-  .submit-btn.loading .loader { display: flex; }
-
-  /* Success state */
-  .submit-btn.success {
-    background: linear-gradient(135deg, var(--success) 0%, #20bf6b 100%);
-    color: #fff;
-    pointer-events: none;
-    animation: successPulse 0.4s ease;
-  }
-
-  .submit-btn.success .submit-btn-text { opacity: 0; }
-  .submit-btn.success .submit-btn-icon { opacity: 0; }
-  .submit-btn.success .checkmark { display: flex; }
-  .submit-btn.success .loader { display: none; }
-
-  @keyframes successPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.03); }
-    100% { transform: scale(1); }
-  }
-
-  .loader {
-    display: none;
-    position: absolute;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .spinner {
-    width: 22px; height: 22px;
-    border: 3px solid rgba(0,212,170,0.2);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-  }
-
-  .loader-text {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 15px;
-    letter-spacing: 2px;
-    animation: loadingDots 1.2s infinite;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  @keyframes loadingDots {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  .checkmark {
-    display: none;
-    align-items: center;
-    gap: 8px;
-    font-size: 22px;
-    position: absolute;
-    animation: checkIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-
-  @keyframes checkIn {
-    0% { transform: scale(0.5); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-  }
-
-  /* Ripple */
-  .ripple {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.25);
-    transform: scale(0);
-    animation: rippleAnim 0.5s linear;
-    pointer-events: none;
-  }
-
-  @keyframes rippleAnim {
-    to { transform: scale(4); opacity: 0; }
-  }
-
-  .footer {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.5;
-    padding: 10px;
-    background: rgba(0,0,0,0.2);
-    border-radius: 10px;
-    border: 1px solid var(--border);
-  }
-
-  /* FAB */
-  .fab {
-    position: fixed;
-    top: 18px; right: 18px;
-    width: 44px; height: 44px;
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    border-radius: 50%;
-    font-size: 20px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    z-index: 1000;
-    transition: all 0.3s;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-  }
-
-  .fab:hover {
-    border-color: var(--accent);
-    box-shadow: var(--glow), 0 4px 16px rgba(0,0,0,0.4);
-    transform: rotate(30deg) scale(1.1);
-  }
-
-  /* MODAL */
-  .calculator-modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.75);
-    backdrop-filter: blur(4px);
-    z-index: 999;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-
-  .calculator-modal.active { display: flex; }
-
-  .calculator-container {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 28px 22px 22px;
-    border-radius: 24px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-    width: 100%;
-    max-width: 400px;
-    position: relative;
-    animation: modalIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    overflow: hidden;
-  }
-
-  .calculator-container::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent2), var(--accent));
-  }
-
-  @keyframes modalIn {
-    from { transform: scale(0.9) translateY(20px); opacity: 0; }
-    to { transform: scale(1) translateY(0); opacity: 1; }
-  }
-
-  .calculator-header {
-    text-align: center;
-    margin-bottom: 20px;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: 1px;
-  }
-
-  .calculator-header span { color: var(--accent2); }
-
-  .calculator-close {
-    position: absolute;
-    top: 12px; right: 14px;
-    font-size: 24px;
-    cursor: pointer;
-    color: var(--muted);
-    width: 34px; height: 34px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 50%;
-    transition: all 0.2s;
-    background: transparent;
-    border: none;
-  }
-
-  .calculator-close:hover { background: rgba(255,71,87,0.15); color: var(--danger); }
-
-  .calculator-result {
-    margin-top: 18px;
-    padding: 14px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 14px;
-    font-size: 14px;
-    min-height: 80px;
-    border: 1px solid var(--border);
-  }
-
-  .calc-placeholder {
-    color: var(--muted);
-    text-align: center;
-    padding: 10px 0;
-    font-size: 13px;
-  }
-
-  .result-line {
-    margin: 9px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 10px;
-    background: rgba(255,255,255,0.03);
-    border-radius: 8px;
-  }
-
-  .result-label { color: var(--muted); font-size: 13px; font-weight: 600; }
-  .result-value { font-weight: 700; color: var(--text); font-size: 15px; }
-  .due { color: var(--danger); }
-  .credit { color: var(--success); }
-
-  @media (max-width: 480px) {
-    .fab { top: 12px; right: 12px; width: 40px; height: 40px; font-size: 18px; }
-    .form-container { padding: 22px 16px; }
-  }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#f0ebe3;
+--card:#fffdf9;
+--card2:#f7f3ee;
+--border:#e2d9ce;
+--ink:#1c1a17;
+--ink2:#4a4540;
+--muted:#9a9088;
+--accent:#e05c2a;
+--accent2:#c44d1f;
+--green:#1d8a5e;
+--red:#d63031;
+--red-bg:#ffeaea;
+--gold:#c9860a;
+--sh1:0 2px 8px rgba(60,40,20,.08);
+--sh2:0 8px 32px rgba(60,40,20,.12);
+--sh3:0 24px 64px rgba(60,40,20,.18);
+}
+html{scroll-behavior:smooth}
+body{
+font-family:'DM Sans',sans-serif;
+background:var(--bg);
+background-image:
+  radial-gradient(ellipse at 15% 90%,rgba(224,92,42,.08) 0%,transparent 45%),
+  radial-gradient(ellipse at 88% 8%,rgba(201,134,10,.07) 0%,transparent 42%),
+  url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='.8' fill='%23b8a898' fill-opacity='.18'/%3E%3C/svg%3E");
+min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:24px 16px 60px;
+}
+.w{width:100%;max-width:440px}
+.card{
+background:var(--card);border:1px solid var(--border);border-radius:28px;
+box-shadow:var(--sh3);overflow:hidden;
+animation:cardIn .65s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(32px) scale(.96)}to{opacity:1;transform:none}}
+.strip{
+height:4px;
+background:linear-gradient(90deg,var(--gold) 0%,var(--accent) 35%,#f59e0b 65%,var(--accent) 100%);
+background-size:300%;animation:stripAnim 3.5s linear infinite;
+}
+@keyframes stripAnim{0%{background-position:0%}100%{background-position:300%}}
+.hdr{
+padding:26px 28px 22px;display:flex;align-items:center;gap:18px;
+border-bottom:1px solid var(--border);background:var(--card2);
+}
+.logo-ring{position:relative;width:68px;height:68px;flex-shrink:0}
+.logo-ring::before{
+content:'';position:absolute;inset:-4px;border-radius:50%;
+background:conic-gradient(from 0deg,var(--accent),var(--gold),#f59e0b,var(--accent));
+animation:rotate 5s linear infinite;
+}
+@keyframes rotate{to{transform:rotate(360deg)}}
+.logo-ring::after{content:'';position:absolute;inset:2px;border-radius:50%;background:var(--card2)}
+.logo{position:relative;z-index:1;width:64px;height:64px;border-radius:50%;object-fit:contain;padding:8px;background:var(--card2)}
+.hdr-text .name{font-family:'Syne',sans-serif;font-size:25px;font-weight:800;color:var(--ink);letter-spacing:.3px}
+.hdr-text .name em{color:var(--accent);font-style:normal}
+.hdr-text .sub{font-size:11px;color:var(--muted);letter-spacing:1.8px;text-transform:uppercase;margin-top:4px;font-weight:500;display:flex;align-items:center;gap:6px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.75)}}
+.body{padding:22px 22px 18px}
+.sec{
+font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
+letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);
+margin:18px 0 10px;display:flex;align-items:center;gap:8px;
+}
+.sec::after{content:'';flex:1;height:1px;background:var(--border)}
+.fg{margin-bottom:13px;animation:fgIn .45s cubic-bezier(.22,1,.36,1) both}
+.fg:nth-child(1){animation-delay:.04s}.fg:nth-child(2){animation-delay:.08s}
+.fg:nth-child(3){animation-delay:.12s}.fg:nth-child(4){animation-delay:.16s}
+.fg:nth-child(5){animation-delay:.2s}.fg:nth-child(6){animation-delay:.24s}
+.fg:nth-child(7){animation-delay:.28s}.fg:nth-child(8){animation-delay:.32s}
+.fg:nth-child(9){animation-delay:.36s}
+@keyframes fgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+label{
+display:flex;align-items:center;gap:5px;
+font-size:11px;font-weight:600;color:var(--ink2);
+letter-spacing:.7px;margin-bottom:6px;text-transform:uppercase;
+}
+.req{color:var(--accent);font-size:15px;line-height:1}
+.f{
+width:100%;padding:11px 14px;background:#fff;
+border:1.5px solid var(--border);border-radius:12px;
+color:var(--ink);font-size:15px;font-family:'DM Sans',sans-serif;
+transition:border-color .2s,box-shadow .2s,transform .15s;
+-webkit-appearance:none;appearance:none;
+}
+.f:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(224,92,42,.1);transform:translateY(-1px)}
+.f::placeholder{color:rgba(154,144,136,.7)}
+select.f{
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='8' viewBox='0 0 13 8'%3E%3Cpath d='M1 1l5.5 5.5L12 1' stroke='%23e05c2a' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+background-repeat:no-repeat;background-position:right 14px center;
+padding-right:40px;cursor:pointer;
+}
+select.f option{background:#fff;color:var(--ink)}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{
+width:100%;padding:17px;border:none;border-radius:16px;
+font-family:'Syne',sans-serif;font-size:17px;font-weight:800;
+letter-spacing:1.5px;cursor:pointer;
+background:linear-gradient(135deg,var(--accent),var(--accent2));
+color:#fff;position:relative;overflow:hidden;
+transition:transform .2s,box-shadow .2s;
+box-shadow:0 6px 22px rgba(224,92,42,.42),0 2px 6px rgba(224,92,42,.2);
+display:flex;align-items:center;justify-content:center;gap:10px;
+margin-top:8px;
+}
+.btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.18),transparent 55%)}
+.btn:hover:not([disabled]){transform:translateY(-2px);box-shadow:0 10px 30px rgba(224,92,42,.52),0 4px 10px rgba(224,92,42,.25)}
+.btn:active:not([disabled]){transform:translateY(1px)}
+.bico{font-size:21px;transition:transform .3s}
+.btn:hover .bico{transform:translateX(3px) rotate(-12deg)}
+.blabel{transition:opacity .15s}
+.bloader{display:none;position:absolute;inset:0;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.bloader.on{display:flex}
+.sp{width:20px;height:20px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.blt{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;color:#fff;animation:pulse2 1s ease-in-out infinite}
+@keyframes pulse2{0%,100%{opacity:1}50%{opacity:.6}}
+.bsuccess{display:none;position:absolute;inset:0;align-items:center;justify-content:center;gap:10px;background:var(--green);border-radius:16px}
+.bsuccess.on{display:flex;animation:sIn .4s cubic-bezier(.22,1,.36,1)}
+@keyframes sIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+.bst{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;letter-spacing:2px;color:#fff}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.28);transform:scale(0);pointer-events:none;animation:rip .55s linear}
+@keyframes rip{to{transform:scale(5);opacity:0}}
+.note{
+margin:18px 0 0;padding:11px 16px;
+background:linear-gradient(135deg,rgba(224,92,42,.06),rgba(201,134,10,.05));
+border:1px solid rgba(224,92,42,.14);border-radius:13px;
+font-size:11.5px;color:var(--ink2);line-height:1.6;text-align:center;
+}
+.fab{
+position:fixed;top:20px;right:20px;width:48px;height:48px;border-radius:50%;
+background:var(--card);border:1.5px solid var(--border);font-size:22px;
+display:flex;align-items:center;justify-content:center;cursor:pointer;
+z-index:100;box-shadow:var(--sh2);transition:all .3s cubic-bezier(.22,1,.36,1);
+}
+.fab:hover{transform:scale(1.12) rotate(48deg);border-color:var(--accent);box-shadow:0 8px 24px rgba(224,92,42,.28)}
+.ov{
+display:none;position:fixed;inset:0;
+background:rgba(28,26,23,.52);backdrop-filter:blur(7px);
+z-index:200;align-items:center;justify-content:center;padding:20px;
+}
+.ov.on{display:flex;animation:fIn .25s ease}
+@keyframes fIn{from{opacity:0}to{opacity:1}}
+.modal{
+background:var(--card);border:1px solid var(--border);
+border-radius:28px;box-shadow:var(--sh3);width:100%;max-width:420px;overflow:hidden;
+animation:mIn .35s cubic-bezier(.22,1,.36,1);
+}
+@keyframes mIn{from{opacity:0;transform:translateY(32px) scale(.95)}to{opacity:1;transform:none}}
+.mstrip{height:3px;background:linear-gradient(90deg,var(--gold),var(--accent))}
+.mhdr{
+padding:18px 22px 15px;display:flex;align-items:center;
+justify-content:space-between;border-bottom:1px solid var(--border);background:var(--card2);
+}
+.mtitle{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:var(--ink)}
+.mtitle em{color:var(--accent);font-style:normal}
+.mclose{
+width:36px;height:36px;border-radius:50%;border:none;background:var(--bg);
+cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center;
+color:var(--muted);transition:all .2s;
+}
+.mclose:hover{background:var(--red-bg);color:var(--red)}
+.mbody{padding:18px 20px 20px}
+.cr{margin-top:16px;background:var(--card2);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.ce{padding:16px;text-align:center;color:var(--muted);font-size:13px;font-weight:500}
+.rrow{
+display:flex;justify-content:space-between;align-items:center;
+padding:11px 16px;border-bottom:1px solid var(--border);transition:background .2s;
+}
+.rrow:last-child{border-bottom:none}
+.rrow:hover{background:rgba(224,92,42,.03)}
+.rk{font-size:13px;font-weight:600;color:var(--ink2)}
+.rv{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--ink)}
+.rv.due{color:var(--red)}.rv.cr2{color:var(--green)}.rv.neu{color:var(--gold)}
+.cerr{padding:14px 16px;color:var(--red);font-size:13px;font-weight:600;text-align:center}
+@media(max-width:400px){.r2{grid-template-columns:1fr}.fab{top:14px;right:14px;width:42px;height:42px;font-size:19px}}
 </style>
 </head>
 <body>
-
-<div class="form-container">
-  <div class="header">
-    <div class="logo-wrap">
-      <img src="https://rpm.gt.tc/logo.png" alt="RPM Logo" class="logo">
-      <div class="fuel-badge">⛽</div>
-    </div>
-    <div class="title">Diesel <span>Voucher</span></div>
-    <div class="subtitle">RPM Logistics • Fuel Management</div>
-  </div>
-
-  <div class="divider"></div>
-
-  <form id="dieselForm" novalidate>
-    <div class="form-group">
-      <label><span class="licon">🚛</span> Vehicle No <span class="required">*</span></label>
-      <input type="text" id="vehicleNo" placeholder="e.g. MH12AB1234" required>
-    </div>
-
-    <div class="form-group">
-      <label><span class="licon">🚚</span> Vehicle Type <span class="required">*</span></label>
-      <select id="vehicleType" required>
-        <option value="">Select Vehicle Type</option>
-        <option value="BUS,6">BUS</option>
-        <option value="TATA ACE,14">TATA ACE</option>
-        <option value="TATA INTRA,12">TATA INTRA</option>
-        <option value="PICKUP,10">PICKUP</option>
-        <option value="10 FT,8.5">10 FT</option>
-        <option value="14 FT,7">14 FT</option>
-        <option value="16 FT,7">16 FT</option>
-        <option value="20 FT,6.5">20 FT</option>
-        <option value="22 FT,6">22 FT</option>
-        <option value="24 FT,5.5">24 FT</option>
-        <option value="32 FT,4">32 FT</option>
-        <option value="407,8.5">407</option>
-        <option value="GENERATOR,1">GENERATOR</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label><span class="licon">📍</span> From Location <span class="required">*</span></label>
-      <input type="text" id="fromLocation" placeholder="Departure city/place" required>
-    </div>
-
-    <div class="form-group">
-      <label><span class="licon">🏁</span> Last Location <span class="required">*</span></label>
-      <input type="text" id="lastLocation" placeholder="Destination city/place" required>
-    </div>
-
-    <div class="form-group">
-      <label><span class="licon">📊</span> Current KM</label>
-      <input type="number" id="currentKm" placeholder="Odometer reading">
-    </div>
-
-    <div class="form-group">
-      <label><span class="licon">💸</span> Diesel (₹) <span class="required">*</span></label>
-      <input type="number" id="diesel" placeholder="Amount in rupees" required>
-    </div>
-
-    <div class="form-group">
-      <label><span class="licon">👮🏻</span> Vendor Name <span class="required">*</span></label>
-      <select id="vendorName" required>
-        <option value="">Select Vendor</option>
-        <option value="RPM LOGISTICS PVT.LTD.">RPM LOGISTICS PVT.LTD.</option>
-        <option value="MASS ENTERPRISES.">MASS ENTERPRISES.</option>
-        <option value="JK TRANSPORT.">JK TRANSPORT</option>
-        <option value="SHREE DATTA KRUPA">SHREE DATTA KRUPA</option>
-        <option value="SKYTRACK">SKYTRACK</option>
-        <option value="AMOL MAHADIK">AMOL MAHADIK</option>
-        <option value="ANAND TRANSPORT">ANAND TRANSPORT</option>
-        <option value="RAJ TRANSPORT">RAJ TRANSPORT</option>
-        <option value="SARTHAK TRANSPORT.">SARTHAK TRANSPORT.</option>
-        <option value="SHAIKH MEHBOOB KASHIM">SHAIKH MEHBOOB KASHIM</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label><span class="licon">📝</span> Note</label>
-      <input type="text" id="note" placeholder="Optional remarks">
-    </div>
-
-    <button type="submit" class="submit-btn" id="submitBtn">
-      <span class="submit-btn-icon">📤</span>
-      <span class="submit-btn-text">SEND VOUCHER</span>
-      <span class="loader">
-        <span class="spinner"></span>
-        <span class="loader-text">SENDING…</span>
-      </span>
-      <span class="checkmark">✅ SENT!</span>
-    </button>
-  </form>
-
-  <div class="footer">
-    ⚠️ Diesel usage par nazar rakhi jaati hai — galat istemal par jawabdehi hogi.
-  </div>
+<div class="w">
+<div class="card">
+<div class="strip"></div>
+<div class="hdr">
+<div class="logo-ring">
+<img src="https://rpm.gt.tc/logo.png" alt="RPM" class="logo">
+</div>
+<div class="hdr-text">
+<div class="name">Diesel <em>Voucher</em></div>
+<div class="sub"><span class="dot"></span>RPM Logistics · Fuel Mgmt</div>
+</div>
+</div>
+<div class="body">
+<form id="F" novalidate>
+<div class="sec">Vehicle Info</div>
+<div class="fg">
+<label>🚛 Vehicle No <span class="req">*</span></label>
+<input class="f" id="vno" type="text" placeholder="MH12AB1234" autocomplete="off" required>
+</div>
+<div class="fg">
+<label>🚚 Vehicle Type <span class="req">*</span></label>
+<select class="f" id="vtype" required>
+<option value="">Select Vehicle Type</option>
+<option value="BUS|6">BUS</option>
+<option value="TATA ACE|14">TATA ACE</option>
+<option value="TATA INTRA|12">TATA INTRA</option>
+<option value="PICKUP|10">PICKUP</option>
+<option value="10 FT|8.5">10 FT</option>
+<option value="14 FT|7">14 FT</option>
+<option value="16 FT|7">16 FT</option>
+<option value="20 FT|6.5">20 FT</option>
+<option value="22 FT|6">22 FT</option>
+<option value="24 FT|5.5">24 FT</option>
+<option value="32 FT|4">32 FT</option>
+<option value="407|8.5">407</option>
+<option value="GENERATOR|1">GENERATOR</option>
+</select>
+</div>
+<div class="sec">Route</div>
+<div class="r2">
+<div class="fg">
+<label>📍 From <span class="req">*</span></label>
+<input class="f" id="from" type="text" placeholder="Departure" required>
+</div>
+<div class="fg">
+<label>🏁 To <span class="req">*</span></label>
+<input class="f" id="last" type="text" placeholder="Destination" required>
+</div>
+</div>
+<div class="fg">
+<label>📊 Odometer KM</label>
+<input class="f" id="km" type="number" placeholder="Current reading">
+</div>
+<div class="sec">Payment</div>
+<div class="fg">
+<label>💸 Diesel Amount (₹) <span class="req">*</span></label>
+<input class="f" id="diesel" type="number" placeholder="Amount in ₹" required>
+</div>
+<div class="fg">
+<label>🏢 Vendor <span class="req">*</span></label>
+<select class="f" id="vendor" required>
+<option value="">Select Vendor</option>
+<option>RPM LOGISTICS PVT.LTD.</option>
+<option>MASS ENTERPRISES.</option>
+<option>JK TRANSPORT.</option>
+<option>SHREE DATTA KRUPA</option>
+<option>SKYTRACK</option>
+<option>AMOL MAHADIK</option>
+<option>ANAND TRANSPORT</option>
+<option>RAJ TRANSPORT</option>
+<option>KOLKATA CHENNAI ROADLINE</option>
+<option>SARTHAK TRANSPORT.</option>
+<option>SHAIKH MEHBOOB KASHIM</option>
+</select>
+</div>
+<div class="fg">
+<label>📝 Note</label>
+<input class="f" id="note" type="text" placeholder="Optional remarks">
+</div>
+<button type="submit" class="btn" id="SB">
+<span class="bico">📤</span>
+<span class="blabel">SEND VOUCHER</span>
+<div class="bloader" id="BL"><div class="sp"></div><span class="blt">SENDING…</span></div>
+<div class="bsuccess" id="BS"><span style="font-size:22px">✅</span><span class="bst">VOUCHER SENT!</span></div>
+</button>
+</form>
+<div class="note">⚠️ Diesel usage par nazar rakhi jaati hai — galat istemal par jawabdehi hogi.</div>
+</div>
+</div>
 </div>
 
-<button class="fab" id="openCalculator" title="Diesel Calculator">⚙️</button>
+<button class="fab" id="FAB">⚙️</button>
 
-<div class="calculator-modal" id="calculatorModal">
-  <div class="calculator-container">
-    <button class="calculator-close" id="closeCalculator">×</button>
-    <div class="calculator-header">⛽ Diesel <span>Calculator</span></div>
-
-    <div class="form-group">
-      <label><span class="licon">🚚</span> Vehicle Type <span class="required">*</span></label>
-      <select id="calcVehicleTypeTrip">
-        <option value="">Select Vehicle Type</option>
-        <option value="BUS">BUS</option>
-        <option value="TATA ACE">TATA ACE</option>
-        <option value="TATA INTRA">TATA INTRA</option>
-        <option value="PICKUP">PICKUP</option>
-        <option value="10 FT">10 FT</option>
-        <option value="14 FT">14 FT</option>
-        <option value="16 FT">16 FT</option>
-        <option value="20 FT">20 FT</option>
-        <option value="22 FT">22 FT</option>
-        <option value="24 FT">24 FT</option>
-        <option value="32 FT">32 FT</option>
-        <option value="407">407</option>
-        <option value="GENERATOR">GENERATOR</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Start KM <span class="required">*</span></label>
-      <input type="number" id="startKm" placeholder="e.g. 125000">
-    </div>
-
-    <div class="form-group">
-      <label>End KM <span class="required">*</span></label>
-      <input type="number" id="endKm" placeholder="e.g. 125450">
-    </div>
-
-    <div class="form-group">
-      <label>⛽ Diesel Price / Liter (₹) <span class="required">*</span></label>
-      <input type="number" id="dieselPriceTrip" value="90" step="0.01">
-    </div>
-
-    <div class="form-group">
-      <label>💰 Previous Diesel Amount (₹) <span class="required">*</span></label>
-      <input type="number" id="prevDiesel" placeholder="e.g. 5000">
-    </div>
-
-    <div class="calculator-result" id="calcResult">
-      <div class="calc-placeholder">Enter values above to calculate</div>
-    </div>
-  </div>
+<div class="ov" id="OV">
+<div class="modal">
+<div class="mstrip"></div>
+<div class="mhdr">
+<div class="mtitle">⛽ Diesel <em>Calculator</em></div>
+<button class="mclose" id="MC" type="button">×</button>
+</div>
+<div class="mbody">
+<div class="fg">
+<label>🚚 Vehicle Type <span class="req">*</span></label>
+<select class="f" id="cvt">
+<option value="">Select Vehicle Type</option>
+<option value="BUS|6">BUS</option>
+<option value="TATA ACE|14">TATA ACE</option>
+<option value="TATA INTRA|12">TATA INTRA</option>
+<option value="PICKUP|10">PICKUP</option>
+<option value="10 FT|8.5">10 FT</option>
+<option value="14 FT|7">14 FT</option>
+<option value="16 FT|7">16 FT</option>
+<option value="20 FT|6.5">20 FT</option>
+<option value="22 FT|6">22 FT</option>
+<option value="24 FT|5.5">24 FT</option>
+<option value="32 FT|4">32 FT</option>
+<option value="407|8.5">407</option>
+<option value="GENERATOR|1">GENERATOR</option>
+</select>
+</div>
+<div class="r2">
+<div class="fg">
+<label>Start KM <span class="req">*</span></label>
+<input class="f" id="sk" type="number" placeholder="125000">
+</div>
+<div class="fg">
+<label>End KM <span class="req">*</span></label>
+<input class="f" id="ek" type="number" placeholder="125500">
+</div>
+</div>
+<div class="r2">
+<div class="fg">
+<label>₹ / Liter <span class="req">*</span></label>
+<input class="f" id="dp" type="number" value="90" step="0.01">
+</div>
+<div class="fg">
+<label>Prev. Amount (₹) <span class="req">*</span></label>
+<input class="f" id="pd" type="number" placeholder="5000">
+</div>
+</div>
+<div class="cr" id="CR"><div class="ce">Enter values above to calculate</div></div>
+</div>
+</div>
 </div>
 
 <script>
-const MILEAGE = {"BUS":6,"TATA ACE":14,"TATA INTRA":12,"PICKUP":10,"10 FT":8.5,"14 FT":7,"16 FT":7,"20 FT":6.5,"22 FT":6,"24 FT":5.5,"32 FT":4,"407":8.5,"GENERATOR":1};
+(function(){
+var $=function(id){return document.getElementById(id)};
+var vno=$('vno'),vtype=$('vtype'),from=$('from'),last=$('last'),km=$('km'),diesel=$('diesel'),vendor=$('vendor'),note=$('note');
+var SB=$('SB'),BL=$('BL'),BS=$('BS'),FAB=$('FAB'),OV=$('OV'),MC=$('MC');
+var cvt=$('cvt'),sk=$('sk'),ek=$('ek'),dp=$('dp'),pd=$('pd'),CR=$('CR');
 
-function calcTrip(s, e, type, price, prev) {
-  if (e <= s) throw new Error("End KM must be greater than Start KM");
-  const m = MILEAGE[type];
-  if (!m) throw new Error("Invalid vehicle type");
-  const km = e - s, liters = km / m, cost = liters * price;
-  const prevLiters = prev / price;
-  const extra = prevLiters - liters;
-  const extraPrice = extra * price;
-  return { km: +km.toFixed(2), liters: +liters.toFixed(2), cost: +cost.toFixed(2), extra: +extra.toFixed(2), extraPrice: +extraPrice.toFixed(2) };
-}
+vno.addEventListener('input',function(){this.value=this.value.toUpperCase().replace(/\s/g,'')});
 
-// Vehicle No uppercase
-document.getElementById('vehicleNo').addEventListener('input', e => {
-  e.target.value = e.target.value.toUpperCase().replace(/\s/g, '');
-});
-
-// Ripple effect
-function addRipple(btn, e) {
-  const r = document.createElement('span');
-  r.classList.add('ripple');
-  const rect = btn.getBoundingClientRect();
-  const size = Math.max(rect.width, rect.height);
-  r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size/2}px;top:${e.clientY - rect.top - size/2}px`;
+function ripple(btn,e){
+  var r=document.createElement('span'),rect=btn.getBoundingClientRect(),s=Math.max(rect.width,rect.height);
+  r.className='ripple';
+  r.style.cssText='width:'+s+'px;height:'+s+'px;left:'+(e.clientX-rect.left-s/2)+'px;top:'+(e.clientY-rect.top-s/2)+'px';
   btn.appendChild(r);
-  setTimeout(() => r.remove(), 500);
+  setTimeout(function(){r.remove()},600);
 }
 
-// Form submit
-document.getElementById('dieselForm').addEventListener('submit', function(e) {
+$('F').addEventListener('submit',function(e){
   e.preventDefault();
-  const fields = ['vehicleNo','vehicleType','fromLocation','lastLocation','diesel','vendorName'];
-  if (!fields.every(id => document.getElementById(id).value.trim())) {
-    alert("Please fill all required fields.");
-    return;
+  if(![vno,vtype,from,last,diesel,vendor].every(function(f){return f.value.trim()})){
+    alert('Please fill all required fields.');return;
   }
-
-  const btn = document.getElementById('submitBtn');
-  addRipple(btn, e);
-
-  const now = new Date();
-  const dt = `${String(now.getDate()).padStart(2,'0')}-${String(now.getMonth()+1).padStart(2,'0')}-${now.getFullYear()}, ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-  const rid = Math.floor(10000 + Math.random() * 90000);
-
-  const v = {
-    vn: document.getElementById('vehicleNo').value,
-    vt: document.getElementById('vehicleType').value,
-    from: document.getElementById('fromLocation').value,
-    last: document.getElementById('lastLocation').value,
-    km: document.getElementById('currentKm').value.trim(),
-    diesel: document.getElementById('diesel').value,
-    vendor: document.getElementById('vendorName').value,
-    note: document.getElementById('note').value.trim()
-  };
-
-  let msg = `🔔 Diesel Request 📢\nResponse #${rid}\n📅 Date & Time : ${dt}\n🚛 Vehicle No. : ${v.vn}\n🚚 Vehicle Type : ${v.vt}\n📍 From Location : ${v.from}\n🏁 Last Location : ${v.last}`;
-  if (v.km) msg += `\n📊 Current KM : ${v.km}`;
-  msg += `\n💸 Diesel (₹ INR) : ${v.diesel}\n👮 Vendor Name : ${v.vendor}`;
-  if (v.note) msg += `\n📝 Note : ${v.note}`;
-
-  // Loading
-  btn.classList.add('loading');
-
-  setTimeout(() => {
-    btn.classList.remove('loading');
-    btn.classList.add('success');
-
-    setTimeout(() => {
-      window.open(`https://wa.me/916206494170?text=${encodeURIComponent(msg)}`, '_blank');
-      setTimeout(() => { location.reload(); }, 1000);
-    }, 900);
-  }, 1800);
+  ripple(SB,e);
+  var n=new Date(),
+  dt=('0'+n.getDate()).slice(-2)+'-'+('0'+(n.getMonth()+1)).slice(-2)+'-'+n.getFullYear()+', '+('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2),
+  rid=Math.floor(10000+Math.random()*90000),
+  vtl=vtype.options[vtype.selectedIndex].text,
+  kmv=km.value.trim(),nv=note.value.trim(),
+  msg='🔔 Diesel Request 📢\nRef #'+rid+'\n📅 Date & Time : '+dt+'\n🚛 Vehicle No. : '+vno.value+'\n🚚 Vehicle Type : '+vtl+'\n📍 From : '+from.value+'\n🏁 To : '+last.value+(kmv?'\n📊 Odometer KM : '+kmv:'')+'\n💸 Diesel (₹) : '+diesel.value+'\n🏢 Vendor : '+vendor.value+(nv?'\n📝 Note : '+nv:'');
+  SB.disabled=true;BL.classList.add('on');
+  setTimeout(function(){
+    BL.classList.remove('on');BS.classList.add('on');
+    setTimeout(function(){
+      window.open('https://wa.me/916206494170?text='+encodeURIComponent(msg),'_blank');
+      setTimeout(function(){location.reload()},900);
+    },850);
+  },1900);
 });
 
-// Modal
-const modal = document.getElementById('calculatorModal');
-document.getElementById('openCalculator').addEventListener('click', () => modal.classList.add('active'));
-document.getElementById('closeCalculator').addEventListener('click', () => modal.classList.remove('active'));
-modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('active'); });
+FAB.addEventListener('click',function(){OV.classList.add('on')});
+MC.addEventListener('click',function(){OV.classList.remove('on')});
+OV.addEventListener('click',function(e){if(e.target===OV)OV.classList.remove('on')});
 
-// Calculator live update
-document.querySelectorAll('#calculatorModal input, #calculatorModal select').forEach(i => {
-  i.addEventListener('input', () => {
-    const type = document.getElementById('calcVehicleTypeTrip').value;
-    const s = parseFloat(document.getElementById('startKm').value);
-    const e = parseFloat(document.getElementById('endKm').value);
-    const p = parseFloat(document.getElementById('dieselPriceTrip').value);
-    const pr = parseFloat(document.getElementById('prevDiesel').value);
-    const res = document.getElementById('calcResult');
-
-    if (!type || isNaN(s) || isNaN(e) || isNaN(p) || p <= 0 || isNaN(pr) || pr < 0) {
-      res.innerHTML = '<div class="calc-placeholder">Fill all fields correctly</div>';
-      return;
-    }
-
-    try {
-      const r = calcTrip(s, e, type, p, pr);
-      const isDue = r.extraPrice < 0;
-      const sign = isDue ? '' : '+';
-      const colorClass = isDue ? 'due' : 'credit';
-      res.innerHTML = `
-        <div class="result-line"><span class="result-label">Distance Travelled</span><span class="result-value">${r.km} KM</span></div>
-        <div class="result-line"><span class="result-label">Diesel Used</span><span class="result-value">${r.liters} L</span></div>
-        <div class="result-line"><span class="result-label">Estimated Cost</span><span class="result-value">₹${r.cost}</span></div>
-        <div class="result-line"><span class="result-label">Due / Credit</span><span class="result-value ${colorClass}">${sign}₹${Math.abs(r.extraPrice).toFixed(2)}</span></div>
-      `;
-    } catch (err) {
-      res.innerHTML = `<div style="color:var(--danger);text-align:center;padding:8px;">${err.message}</div>`;
-    }
-  });
-});
+function calc(){
+  var vv=cvt.value,s=parseFloat(sk.value),e=parseFloat(ek.value),p=parseFloat(dp.value),pr=parseFloat(pd.value);
+  if(!vv||isNaN(s)||isNaN(e)||isNaN(p)||p<=0||isNaN(pr)||pr<0){
+    CR.innerHTML='<div class="ce">Fill all fields correctly</div>';return;
+  }
+  if(e<=s){CR.innerHTML='<div class="cerr">⚠️ End KM must be greater than Start KM</div>';return;}
+  var ml=parseFloat(vv.split('|')[1]),tkm=e-s,lit=tkm/ml,cost=lit*p,pl=pr/p,ex=pl-lit,ea=ex*p;
+  var cls=ea<0?'due':ea>0?'cr2':'neu',lbl=ea<0?'Due Amount':'Credit Amount',sgn=ea<0?'−':'+';
+  CR.innerHTML='<div class="rrow"><span class="rk">Distance</span><span class="rv">'+tkm.toFixed(1)+' KM</span></div><div class="rrow"><span class="rk">Diesel Required</span><span class="rv">'+lit.toFixed(2)+' L</span></div><div class="rrow"><span class="rk">Estimated Cost</span><span class="rv">₹'+cost.toFixed(0)+'</span></div><div class="rrow"><span class="rk">'+lbl+'</span><span class="rv '+cls+'">'+sgn+'₹'+Math.abs(ea).toFixed(0)+'</span></div>';
+}
+[cvt,sk,ek,dp,pd].forEach(function(i){i.addEventListener('input',calc)});
+})();
 </script>
 </body>
 </html>
