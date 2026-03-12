@@ -454,8 +454,8 @@ box-shadow:0 4px 18px rgba(249,115,22,.38),0 1px 4px rgba(249,115,22,.18);
 <!-- Hidden snapshot card for image capture -->
 <div id="snapCard">
   <div class="snap-header">
-    <div class="snap-logo">
-      <img src="https://rpm.gt.tc/logo.png" alt="RPM" id="snapLogo">
+    <div class="snap-logo" style="background:rgba(255,255,255,.25);border-radius:10px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+      <span style="font-size:13px;font-weight:900;color:#fff;letter-spacing:-1px;font-family:'Plus Jakarta Sans',sans-serif;line-height:1">RPM</span>
     </div>
     <div class="snap-brand">
       <div class="snap-brand-name">RPM Logistics</div>
@@ -561,24 +561,6 @@ function calc(){
 
 ['cvt','sk','ek','dp','pd'].forEach(function(id){$(id).addEventListener('input',calc)});
 
-// ── PRE-LOAD LOGO AS BASE64 ──
-var logoB64='';
-(function(){
-  var img=new Image();
-  img.crossOrigin='anonymous';
-  img.onload=function(){
-    try{
-      var c=document.createElement('canvas');
-      c.width=img.naturalWidth;c.height=img.naturalHeight;
-      c.getContext('2d').drawImage(img,0,0);
-      logoB64=c.toDataURL('image/png');
-      $('snapLogo').src=logoB64;
-    }catch(e){logoB64='';}
-  };
-  img.onerror=function(){logoB64='';};
-  img.src='https://rpm.gt.tc/logo.png?_='+Date.now();
-})();
-
 // ── DOWNLOAD IMAGE ──
 $('SHRBTN').addEventListener('click',function(){
   if(!lastResult){return;}
@@ -586,7 +568,6 @@ $('SHRBTN').addEventListener('click',function(){
   btn.disabled=true;
   btn.querySelector('.sb-txt').textContent='GENERATING…';
 
-  if(logoB64){$('snapLogo').src=logoB64;}
   $('snapVtype').textContent=lastResult.vtype+' ('+lastResult.mileage+' km/L)';
 
   var rows=[
