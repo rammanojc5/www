@@ -12,6 +12,7 @@
 <link rel="preload" as="image" href="https://rpm.gt.tc/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
@@ -28,6 +29,7 @@
 --accent-bg:#fff7ed;
 --accent-border:#fed7aa;
 --green:#16a34a;
+--green-bg:#f0fdf4;
 --red:#dc2626;
 --red-bg:#fef2f2;
 --font:'Plus Jakarta Sans',sans-serif;
@@ -53,10 +55,7 @@ box-shadow:0 1px 8px rgba(0,0,0,.06);
 opacity:0;animation:slideDown .5s cubic-bezier(.22,1,.36,1) .05s forwards;
 }
 @keyframes slideDown{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
-.tb-logo{
-width:36px;height:36px;border-radius:9px;
-object-fit:contain;background:var(--accent-bg);padding:4px;flex-shrink:0;
-}
+.tb-logo{width:36px;height:36px;border-radius:9px;object-fit:contain;background:var(--accent-bg);padding:4px;flex-shrink:0}
 .tb-info{flex:1;min-width:0}
 .tb-title{font-size:15px;font-weight:800;color:var(--ink);line-height:1.15;letter-spacing:-.1px}
 .tb-title em{color:var(--accent);font-style:normal}
@@ -74,98 +73,53 @@ transition:background .2s,border-color .2s,transform .25s;
 .tb-btn:active{transform:rotate(22deg) scale(.92)}
 
 /* PROGRESS STRIP */
-.pstrip{
-width:100%;height:3px;
-background:linear-gradient(90deg,var(--accent) 0%,#fbbf24 40%,var(--accent) 80%,#fbbf24 100%);
-background-size:250% 100%;
-animation:pflow 3s linear infinite;
-}
+.pstrip{width:100%;height:3px;background:linear-gradient(90deg,var(--accent) 0%,#fbbf24 40%,var(--accent) 80%,#fbbf24 100%);background-size:250% 100%;animation:pflow 3s linear infinite}
 @keyframes pflow{0%{background-position:0% 0}100%{background-position:250% 0}}
 
 /* PAGE WRAPPER */
 .page{width:100%;max-width:500px;padding:14px 14px 0}
 
-/* CARD — no overflow:hidden so dropdowns are never clipped */
+/* CARD */
 .card{
-background:var(--white);
-border-radius:18px;
+background:var(--white);border-radius:18px;
 border:1px solid var(--border);
 box-shadow:0 2px 12px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.03);
 position:relative;
 opacity:0;animation:cardRise .55s cubic-bezier(.22,1,.36,1) .15s forwards;
 }
 @keyframes cardRise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-
-/* Each section inside card */
 .cs{padding:16px 16px 6px;position:relative}
 .cs+.cs{border-top:1px solid var(--border)}
-
-/* Section header */
-.sh{
-display:flex;align-items:center;gap:7px;
-margin-bottom:13px;
-}
-.sh-ico{
-width:24px;height:24px;border-radius:7px;
-background:var(--accent-bg);border:1px solid var(--accent-border);
-display:flex;align-items:center;justify-content:center;
-font-size:13px;flex-shrink:0;
-}
+.sh{display:flex;align-items:center;gap:7px;margin-bottom:13px}
+.sh-ico{width:24px;height:24px;border-radius:7px;background:var(--accent-bg);border:1px solid var(--accent-border);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
 .sh-txt{font-size:10.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
-
-/* Form group */
 .fg{margin-bottom:11px}
 .fg:last-of-type{margin-bottom:4px}
-label{
-display:block;font-size:12px;font-weight:600;
-color:var(--ink2);margin-bottom:5px;
-}
+label{display:block;font-size:12px;font-weight:600;color:var(--ink2);margin-bottom:5px}
 .req{color:var(--accent);margin-left:1px}
-
-/* Fields */
 .f{
 width:100%;height:46px;padding:0 13px;
-background:var(--surface);
-border:1.5px solid var(--border);
-border-radius:10px;
-color:var(--ink);font-size:15px;
-font-family:var(--font);font-weight:500;
+background:var(--surface);border:1.5px solid var(--border);border-radius:10px;
+color:var(--ink);font-size:15px;font-family:var(--font);font-weight:500;
 -webkit-appearance:none;appearance:none;
 transition:border-color .18s,box-shadow .18s,background .18s;
-position:relative;
 }
-.f:focus{
-outline:none;
-border-color:var(--focus);
-background:var(--white);
-box-shadow:0 0 0 3px rgba(59,130,246,.13);
-}
+.f:focus{outline:none;border-color:var(--focus);background:var(--white);box-shadow:0 0 0 3px rgba(59,130,246,.13)}
 .f::placeholder{color:var(--muted);font-weight:400;font-size:14px}
 select.f{background-image:none;cursor:pointer}
-select.f:focus{border-color:var(--focus)}
 select.f option{background:#fff;color:var(--ink)}
 
-/* KM row — two cols only for this */
-.km-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-
-/* SUBMIT area */
+/* SUBMIT */
 .sub-wrap{padding:14px 16px 18px}
 .btn{
 width:100%;height:52px;border:none;border-radius:13px;
-font-family:var(--font);font-size:16px;font-weight:800;
-letter-spacing:.4px;cursor:pointer;
-background:linear-gradient(135deg,var(--accent),var(--accent-d));
-color:#fff;
-position:relative;overflow:hidden;
-display:flex;align-items:center;justify-content:center;
+font-family:var(--font);font-size:16px;font-weight:800;letter-spacing:.4px;cursor:pointer;
+background:linear-gradient(135deg,var(--accent),var(--accent-d));color:#fff;
+position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
 transition:transform .18s,box-shadow .18s;
 box-shadow:0 4px 18px rgba(249,115,22,.38),0 1px 4px rgba(249,115,22,.18);
 }
-.btn::after{
-content:'';position:absolute;inset:0;
-background:linear-gradient(180deg,rgba(255,255,255,.15) 0%,transparent 55%);
-pointer-events:none;
-}
+.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.15) 0%,transparent 55%);pointer-events:none}
 .btn:not([disabled]):hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(249,115,22,.48)}
 .btn:not([disabled]):active{transform:scale(.98)}
 .btn[disabled]{opacity:.72;cursor:not-allowed;transform:none}
@@ -187,89 +141,126 @@ pointer-events:none;
 @keyframes ripGo{to{transform:scale(5);opacity:0}}
 
 /* Footer note */
-.fnote{
-margin:10px 0 0;padding:8px 14px 14px;
-font-size:10.5px;color:var(--muted);
-line-height:1.5;text-align:center;font-weight:400;
-opacity:0;animation:cardRise .55s cubic-bezier(.22,1,.36,1) .3s forwards;
-}
+.fnote{margin:10px 0 0;padding:8px 14px 14px;font-size:10.5px;color:var(--muted);line-height:1.5;text-align:center;font-weight:400;opacity:0;animation:cardRise .55s cubic-bezier(.22,1,.36,1) .3s forwards}
 
-/* Staggered field animations */
+/* Field animations */
 .fg{opacity:0;animation:fgSlide .42s cubic-bezier(.22,1,.36,1) both}
 @keyframes fgSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.cs:nth-child(1) .fg:nth-child(1){animation-delay:.22s}
-.cs:nth-child(1) .fg:nth-child(2){animation-delay:.28s}
-.cs:nth-child(1) .fg:nth-child(3){animation-delay:.34s}
-.cs:nth-child(2) .fg:nth-child(1){animation-delay:.38s}
-.cs:nth-child(2) .fg:nth-child(2){animation-delay:.43s}
-.cs:nth-child(2) .fg:nth-child(3){animation-delay:.48s}
-.cs:nth-child(3) .fg:nth-child(1){animation-delay:.52s}
-.cs:nth-child(3) .fg:nth-child(2){animation-delay:.57s}
-.cs:nth-child(3) .fg:nth-child(3){animation-delay:.62s}
+.cs:nth-child(1) .fg:nth-child(1){animation-delay:.22s}.cs:nth-child(1) .fg:nth-child(2){animation-delay:.28s}.cs:nth-child(1) .fg:nth-child(3){animation-delay:.34s}
+.cs:nth-child(2) .fg:nth-child(1){animation-delay:.38s}.cs:nth-child(2) .fg:nth-child(2){animation-delay:.43s}.cs:nth-child(2) .fg:nth-child(3){animation-delay:.48s}
+.cs:nth-child(3) .fg:nth-child(1){animation-delay:.52s}.cs:nth-child(3) .fg:nth-child(2){animation-delay:.57s}.cs:nth-child(3) .fg:nth-child(3){animation-delay:.62s}
 .sh{opacity:0;animation:fgSlide .38s cubic-bezier(.22,1,.36,1) both}
-.cs:nth-child(1) .sh{animation-delay:.18s}
-.cs:nth-child(2) .sh{animation-delay:.34s}
-.cs:nth-child(3) .sh{animation-delay:.48s}
+.cs:nth-child(1) .sh{animation-delay:.18s}.cs:nth-child(2) .sh{animation-delay:.34s}.cs:nth-child(3) .sh{animation-delay:.48s}
 .sub-wrap{opacity:0;animation:fgSlide .42s cubic-bezier(.22,1,.36,1) .68s forwards}
 
 /* MODAL OVERLAY */
-.ov{
-display:none;position:fixed;inset:0;
-background:rgba(10,18,30,.48);
-backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-z-index:500;
-align-items:flex-end;justify-content:center;
-}
+.ov{display:none;position:fixed;inset:0;background:rgba(10,18,30,.48);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:500;align-items:flex-end;justify-content:center}
 .ov.on{display:flex;animation:ovFade .2s ease forwards}
 @keyframes ovFade{from{opacity:0}to{opacity:1}}
 
 /* Bottom sheet modal */
-.modal{
-background:var(--white);
-border-radius:22px 22px 0 0;
-width:100%;max-width:500px;
-max-height:92dvh;
-overflow-y:auto;
--webkit-overflow-scrolling:touch;
-animation:sheetUp .33s cubic-bezier(.22,1,.36,1) forwards;
-}
+.modal{background:var(--white);border-radius:22px 22px 0 0;width:100%;max-width:500px;max-height:92dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:sheetUp .33s cubic-bezier(.22,1,.36,1) forwards}
 @keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .m-handle{width:36px;height:4px;border-radius:2px;background:var(--border);margin:10px auto 0}
-.m-head{
-padding:13px 18px 11px;
-display:flex;align-items:center;justify-content:space-between;
-border-bottom:1px solid var(--border);
-position:sticky;top:0;background:var(--white);z-index:10;
-}
+.m-head{padding:13px 18px 11px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--white);z-index:10}
 .m-title{font-size:17px;font-weight:800;color:var(--ink)}
 .m-title em{color:var(--accent);font-style:normal}
-.m-close{
-width:32px;height:32px;border-radius:8px;border:none;
-background:var(--surface);cursor:pointer;font-size:19px;
-display:flex;align-items:center;justify-content:center;
-color:var(--muted);transition:background .18s,color .18s;
-}
+.m-close{width:32px;height:32px;border-radius:8px;border:none;background:var(--surface);cursor:pointer;font-size:19px;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:background .18s,color .18s}
 .m-close:hover{background:var(--red-bg);color:var(--red)}
 .m-body{padding:14px 16px 32px}
 .m-body .fg{opacity:1;animation:none}
 .m-r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.cres{
-margin-top:14px;
-background:var(--surface);
-border:1px solid var(--border);
-border-radius:12px;overflow:hidden;
-}
+
+/* Calculator result box */
+.cres{margin-top:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
 .ce{padding:16px;text-align:center;color:var(--muted);font-size:13px;font-weight:500}
-.crow{
-display:flex;justify-content:space-between;align-items:center;
-padding:11px 14px;border-bottom:1px solid var(--border);
-}
+.crow{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-bottom:1px solid var(--border)}
 .crow:last-child{border-bottom:none}
 .crow:hover{background:rgba(0,0,0,.018)}
 .ck{font-size:13px;font-weight:600;color:var(--ink2)}
 .cv{font-size:14px;font-weight:700;color:var(--ink);font-family:var(--font)}
 .cv.due{color:var(--red)}.cv.credit{color:var(--green)}.cv.even{color:var(--muted)}
 .cerr{padding:13px;color:var(--red);font-size:13px;font-weight:600;text-align:center}
+
+/* ── SHARE BUTTON ── */
+.share-wrap{
+  padding:0 16px 18px;
+  display:none;
+}
+.share-wrap.visible{display:block}
+.share-btn{
+  width:100%;height:46px;border:none;border-radius:12px;
+  font-family:var(--font);font-size:14px;font-weight:700;letter-spacing:.3px;cursor:pointer;
+  background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:transform .18s,box-shadow .18s,opacity .18s;
+  box-shadow:0 4px 14px rgba(22,163,74,.35);
+  position:relative;overflow:hidden;
+}
+.share-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.15) 0%,transparent 55%);pointer-events:none}
+.share-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(22,163,74,.45)}
+.share-btn:active{transform:scale(.98)}
+.share-btn[disabled]{opacity:.6;cursor:not-allowed;transform:none}
+.share-btn .sb-ico{font-size:18px;position:relative;z-index:1}
+.share-btn .sb-txt{position:relative;z-index:1}
+
+/* ── SNAPSHOT CARD (hidden, used for capture) ── */
+#snapCard{
+  position:fixed;
+  left:-9999px;top:-9999px;
+  width:380px;
+  background:#fff;
+  border-radius:20px;
+  overflow:hidden;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  border:1.5px solid #e4e8ed;
+}
+.snap-header{
+  background:linear-gradient(135deg,#f97316,#e8640a);
+  padding:18px 20px 16px;
+  display:flex;align-items:center;gap:12px;
+}
+.snap-logo{
+  width:42px;height:42px;border-radius:10px;
+  background:rgba(255,255,255,.22);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.snap-logo img{width:34px;height:34px;object-fit:contain}
+.snap-brand{flex:1}
+.snap-brand-name{font-size:17px;font-weight:800;color:#fff;letter-spacing:-.2px}
+.snap-brand-sub{font-size:11px;color:rgba(255,255,255,.78);font-weight:500;margin-top:2px}
+.snap-badge{
+  background:rgba(255,255,255,.22);
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:8px;
+  padding:4px 10px;
+  font-size:11px;font-weight:700;color:#fff;letter-spacing:.5px;
+}
+.snap-body{padding:16px 18px 18px}
+.snap-vtype{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;
+  padding:5px 12px;margin-bottom:14px;
+}
+.snap-vtype-lbl{font-size:11px;font-weight:700;color:#9a3412;letter-spacing:1px;text-transform:uppercase}
+.snap-vtype-val{font-size:13px;font-weight:800;color:#ea580c}
+.snap-rows{}
+.snap-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid #f1f5f9;
+}
+.snap-row:last-child{border-bottom:none}
+.snap-rk{font-size:12.5px;font-weight:600;color:#64748b}
+.snap-rv{font-size:13.5px;font-weight:800;color:#0f172a}
+.snap-rv.due{color:#dc2626}.snap-rv.credit{color:#16a34a}.snap-rv.even{color:#9ca3af}
+.snap-footer{
+  background:#f8fafc;border-top:1px solid #e4e8ed;
+  padding:10px 18px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.snap-footer-txt{font-size:10px;color:#94a3b8;font-weight:500}
+.snap-footer-date{font-size:10px;color:#94a3b8;font-weight:500}
 
 @media(min-width:501px){
   .ov{align-items:center;padding:20px}
@@ -278,10 +269,8 @@ padding:11px 14px;border-bottom:1px solid var(--border);
   @keyframes sheetUp{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
 }
 @media(max-width:360px){
-  .topbar{padding:10px 14px}
-  .cs{padding:13px 13px 5px}
-  .sub-wrap{padding:12px 13px 16px}
-  .km-row{grid-template-columns:1fr}
+  .topbar{padding:10px 14px}.cs{padding:13px 13px 5px}.sub-wrap{padding:12px 13px 16px}
+  .m-r2{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -301,7 +290,6 @@ padding:11px 14px;border-bottom:1px solid var(--border);
 <div class="page">
   <div class="card">
     <form id="F" novalidate>
-
       <div class="cs">
         <div class="sh"><span class="sh-ico">🚛</span><span class="sh-txt">Vehicle Info</span></div>
         <div class="fg">
@@ -390,7 +378,6 @@ padding:11px 14px;border-bottom:1px solid var(--border);
           </div>
         </button>
       </div>
-
     </form>
   </div>
 
@@ -399,6 +386,7 @@ padding:11px 14px;border-bottom:1px solid var(--border);
   </div>
 </div>
 
+<!-- MODAL -->
 <div class="ov" id="OV">
   <div class="modal">
     <div class="m-handle"></div>
@@ -446,10 +434,45 @@ padding:11px 14px;border-bottom:1px solid var(--border);
           <input class="f" id="pd" type="number" placeholder="5000" inputmode="numeric">
         </div>
       </div>
+
+      <!-- Result -->
       <div class="cres" id="CR">
         <div class="ce">Enter values above to calculate</div>
       </div>
+
+      <!-- Share Button -->
+      <div class="share-wrap" id="SW">
+        <button type="button" class="share-btn" id="SHRBTN">
+          <span class="sb-ico">📸</span>
+          <span class="sb-txt">SHARE AS IMAGE</span>
+        </button>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- Hidden snapshot card for image capture -->
+<div id="snapCard">
+  <div class="snap-header">
+    <div class="snap-logo">
+      <img src="https://rpm.gt.tc/logo.png" alt="RPM" id="snapLogo">
+    </div>
+    <div class="snap-brand">
+      <div class="snap-brand-name">RPM Logistics</div>
+      <div class="snap-brand-sub">Diesel Calculator Report</div>
+    </div>
+    <div class="snap-badge">⛽ FUEL</div>
+  </div>
+  <div class="snap-body">
+    <div class="snap-vtype">
+      <span class="snap-vtype-lbl">Vehicle</span>
+      <span class="snap-vtype-val" id="snapVtype">—</span>
+    </div>
+    <div class="snap-rows" id="snapRows"></div>
+  </div>
+  <div class="snap-footer">
+    <span class="snap-footer-txt">rpm.gt.tc · Fuel Management</span>
+    <span class="snap-footer-date" id="snapDate"></span>
   </div>
 </div>
 
@@ -465,15 +488,12 @@ function ripple(btn,ev){
   var r=document.createElement('span'),rect=btn.getBoundingClientRect(),s=Math.max(rect.width,rect.height);
   r.className='ripple';
   r.style.cssText='width:'+s+'px;height:'+s+'px;left:'+(ev.clientX-rect.left-s/2)+'px;top:'+(ev.clientY-rect.top-s/2)+'px';
-  btn.appendChild(r);
-  setTimeout(function(){r.remove()},520);
+  btn.appendChild(r);setTimeout(function(){r.remove()},520);
 }
 
 $('F').addEventListener('submit',function(ev){
   ev.preventDefault();
-  if(![vno,vtype,from,last,diesel,vendor].every(function(f){return f.value.trim()})){
-    alert('Please fill all required fields.');return;
-  }
+  if(![vno,vtype,from,last,diesel,vendor].every(function(f){return f.value.trim()})){alert('Please fill all required fields.');return;}
   ripple(SB,ev);
   var n=new Date(),
   dt=('0'+n.getDate()).slice(-2)+'-'+('0'+(n.getMonth()+1)).slice(-2)+'-'+n.getFullYear()+', '+('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2),
@@ -481,11 +501,9 @@ $('F').addEventListener('submit',function(ev){
   vtv=vtype.value.replace('|',','),
   kmv=km.value.trim(),nv=note.value.trim(),
   msg='🔔Diesel Request📢\nResponse #'+rid+'\n📅 Date & Time. : '+dt+'\n🚛 Vehicle No. : '+vno.value+'\n🚚 Vehicle Type. : '+vtv+'\n📍 From Location. : '+from.value+'\n📍Last Location. : '+last.value+(kmv?'\n📊 Current KM. : '+kmv:'')+'\n💸 Diesel (₹ INR). : '+diesel.value+'\n👮🏻 Vendor Name. : '+vendor.value+(nv?'\n📝 Note. : '+nv:'');
-  SB.disabled=true;
-  BL.classList.add('show');
+  SB.disabled=true;BL.classList.add('show');
   setTimeout(function(){
-    BL.classList.remove('show');
-    BS.classList.add('show');
+    BL.classList.remove('show');BS.classList.add('show');
     setTimeout(function(){
       window.open('https://wa.me/916206494170?text='+encodeURIComponent(msg),'_blank');
       setTimeout(function(){location.reload()},900);
@@ -497,15 +515,134 @@ $('FAB').addEventListener('click',function(){OV.classList.add('on')});
 $('MC').addEventListener('click',function(){OV.classList.remove('on')});
 OV.addEventListener('click',function(ev){if(ev.target===OV)OV.classList.remove('on')});
 
+// ── last computed result store ──
+var lastResult=null;
+
 function calc(){
-  var vv=$('cvt').value,s=parseFloat($('sk').value),e=parseFloat($('ek').value),p=parseFloat($('dp').value),pr=parseFloat($('pd').value),CR=$('CR');
-  if(!vv||isNaN(s)||isNaN(e)||isNaN(p)||p<=0||isNaN(pr)||pr<0){CR.innerHTML='<div class="ce">Fill all fields correctly</div>';return;}
-  if(e<=s){CR.innerHTML='<div class="cerr">⚠️ End KM must be greater than Start KM</div>';return;}
+  var vv=$('cvt').value,s=parseFloat($('sk').value),e=parseFloat($('ek').value),
+      p=parseFloat($('dp').value),pr=parseFloat($('pd').value),
+      CR=$('CR'),SW=$('SW');
+
+  if(!vv||isNaN(s)||isNaN(e)||isNaN(p)||p<=0||isNaN(pr)||pr<0){
+    CR.innerHTML='<div class="ce">Fill all fields correctly</div>';
+    SW.classList.remove('visible');lastResult=null;return;
+  }
+  if(e<=s){
+    CR.innerHTML='<div class="cerr">⚠️ End KM must be greater than Start KM</div>';
+    SW.classList.remove('visible');lastResult=null;return;
+  }
   var ml=parseFloat(vv.split('|')[1]),tkm=e-s,lit=tkm/ml,cost=lit*p,ea=(pr/p-lit)*p;
   var cls=ea<0?'due':ea>0?'credit':'even',lbl=ea<0?'Due Amount':'Credit Amount',sgn=ea<0?'−':'+';
-  CR.innerHTML='<div class="crow"><span class="ck">Distance Travelled</span><span class="cv">'+tkm.toFixed(1)+' KM</span></div><div class="crow"><span class="ck">Diesel Required</span><span class="cv">'+lit.toFixed(2)+' L</span></div><div class="crow"><span class="ck">Estimated Cost</span><span class="cv">₹'+cost.toFixed(0)+'</span></div><div class="crow"><span class="ck">'+lbl+'</span><span class="cv '+cls+'">'+sgn+'₹'+Math.abs(ea).toFixed(0)+'</span></div>';
+
+  CR.innerHTML=
+    '<div class="crow"><span class="ck">Distance Travelled</span><span class="cv">'+tkm.toFixed(1)+' KM</span></div>'+
+    '<div class="crow"><span class="ck">Diesel Required</span><span class="cv">'+lit.toFixed(2)+' L</span></div>'+
+    '<div class="crow"><span class="ck">Estimated Cost</span><span class="cv">₹'+cost.toFixed(0)+'</span></div>'+
+    '<div class="crow"><span class="ck">'+lbl+'</span><span class="cv '+cls+'">'+sgn+'₹'+Math.abs(ea).toFixed(0)+'</span></div>';
+
+  SW.classList.add('visible');
+
+  lastResult={
+    vtype: vv.split('|')[0],
+    mileage: ml,
+    tkm: tkm.toFixed(1),
+    lit: lit.toFixed(2),
+    cost: cost.toFixed(0),
+    ea: Math.abs(ea).toFixed(0),
+    eaClass: cls,
+    eaLabel: lbl,
+    eaSign: sgn,
+    startKm: s,
+    endKm: e,
+    pricePerL: p,
+    prevAmt: pr
+  };
 }
+
 ['cvt','sk','ek','dp','pd'].forEach(function(id){$(id).addEventListener('input',calc)});
+
+// ── SHARE AS IMAGE ──
+$('SHRBTN').addEventListener('click',function(){
+  if(!lastResult){return;}
+
+  var btn=$('SHRBTN');
+  btn.disabled=true;
+  btn.querySelector('.sb-txt').textContent='GENERATING…';
+
+  // Populate snap card
+  $('snapVtype').textContent=lastResult.vtype+' ('+lastResult.mileage+' km/L)';
+
+  var rows=[
+    {k:'Distance Travelled',v:lastResult.tkm+' KM',c:''},
+    {k:'Diesel Required',v:lastResult.lit+' L',c:''},
+    {k:'Estimated Cost',v:'₹'+lastResult.cost,c:''},
+    {k:lastResult.eaLabel,v:lastResult.eaSign+'₹'+lastResult.ea,c:lastResult.eaClass},
+    {k:'Start KM → End KM',v:lastResult.startKm+' → '+lastResult.endKm,c:''},
+    {k:'Price per Liter',v:'₹'+lastResult.pricePerL.toFixed(2),c:''},
+    {k:'Previous Amount',v:'₹'+lastResult.prevAmt.toFixed(0),c:''}
+  ];
+
+  var html='';
+  rows.forEach(function(r){
+    html+='<div class="snap-row"><span class="snap-rk">'+r.k+'</span><span class="snap-rv'+( r.c?' '+r.c:'')+'" >'+r.v+'</span></div>';
+  });
+  $('snapRows').innerHTML=html;
+
+  var n=new Date();
+  $('snapDate').textContent=('0'+n.getDate()).slice(-2)+'/'+('0'+(n.getMonth()+1)).slice(-2)+'/'+n.getFullYear()+' '+('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2);
+
+  // Position off-screen but renderable
+  var sc=$('snapCard');
+  sc.style.left='-9999px';
+  sc.style.top='0px'; // must be in a rendered position for html2canvas
+
+  // Wait a tick for DOM to update
+  setTimeout(function(){
+    html2canvas(sc,{
+      scale:2.5,
+      backgroundColor:'#ffffff',
+      useCORS:true,
+      allowTaint:true,
+      logging:false
+    }).then(function(canvas){
+      // Try native share API (mobile)
+      canvas.toBlob(function(blob){
+        var n=new Date();
+        var fname='RPM_Diesel_Calc_'+n.getFullYear()+('0'+(n.getMonth()+1)).slice(-2)+('0'+n.getDate()).slice(-2)+'_'+('0'+n.getHours()).slice(-2)+('0'+n.getMinutes()).slice(-2)+'.png';
+
+        var canShare=navigator.canShare&&navigator.share;
+        var file=null;
+        try{file=new File([blob],fname,{type:'image/png'});}catch(e){}
+
+        if(canShare&&file&&navigator.canShare({files:[file]})){
+          navigator.share({files:[file],title:'RPM Diesel Calculation',text:'⛽ Diesel calculation by RPM Logistics'})
+            .then(function(){resetBtn();})
+            .catch(function(){fallbackDownload(canvas,fname);resetBtn();});
+        } else {
+          fallbackDownload(canvas,fname);
+          resetBtn();
+        }
+      },'image/png');
+    }).catch(function(err){
+      console.error(err);
+      alert('Image generate nahi ho saki. Dobara try karein.');
+      resetBtn();
+    });
+  },80);
+
+  function fallbackDownload(canvas,fname){
+    var a=document.createElement('a');
+    a.href=canvas.toDataURL('image/png');
+    a.download=fname;
+    a.click();
+  }
+
+  function resetBtn(){
+    btn.disabled=false;
+    btn.querySelector('.sb-txt').textContent='SHARE AS IMAGE';
+  }
+});
+
 })();
 </script>
 </body>
