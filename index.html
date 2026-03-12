@@ -463,17 +463,9 @@ box-shadow:0 4px 18px rgba(249,115,22,.38),0 1px 4px rgba(249,115,22,.18);
       <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:14px;background:var(--surface)">
         <img id="IMGPREV" src="" alt="Diesel Calculation" style="width:100%;display:block;border-radius:12px">
       </div>
-      <div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:14px;line-height:1.6">
-        📥 Pehle image <strong>Save/Download</strong> karo<br>phir WhatsApp mein manually attach karo
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <button type="button" id="IMGDL" style="height:46px;border:1.5px solid var(--border);border-radius:11px;background:var(--surface);font-family:var(--font);font-size:13px;font-weight:700;color:var(--ink2);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
-          <span style="font-size:16px">💾</span> SAVE IMG
-        </button>
-        <button type="button" id="IMGWA" style="height:46px;border:none;border-radius:11px;background:linear-gradient(135deg,#25d366,#128c7e);font-family:var(--font);font-size:13px;font-weight:800;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 14px rgba(37,211,102,.35)">
-          <span style="font-size:16px">💬</span> OPEN WHATSAPP
-        </button>
-      </div>
+      <button type="button" id="IMGDL" style="width:100%;height:50px;border:none;border-radius:12px;background:linear-gradient(135deg,#f97316,#e8640a);font-family:var(--font);font-size:15px;font-weight:800;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(249,115,22,.38)">
+        <span style="font-size:19px">💾</span> SAVE TO GALLERY
+      </button>
     </div>
   </div>
 </div>
@@ -607,7 +599,7 @@ var logoB64='';
 })();
 
 // ── IMAGE PREVIEW MODAL ──
-var imgOv=$('IMGOV'),imgPrev=$('IMGPREV'),imgDlBtn=$('IMGDL'),imgWaBtn=$('IMGWA'),imgClose=$('IMGCLOSE');
+var imgOv=$('IMGOV'),imgPrev=$('IMGPREV'),imgDlBtn=$('IMGDL'),imgClose=$('IMGCLOSE');
 var generatedDataUrl='',generatedFname='';
 
 imgClose.addEventListener('click',function(){imgOv.classList.remove('on');});
@@ -617,18 +609,6 @@ imgDlBtn.addEventListener('click',function(){
   if(!generatedDataUrl)return;
   var a=document.createElement('a');
   a.href=generatedDataUrl;a.download=generatedFname;a.click();
-});
-
-imgWaBtn.addEventListener('click',function(){
-  if(!generatedDataUrl)return;
-  // Step 1: Download image
-  var a=document.createElement('a');
-  a.href=generatedDataUrl;a.download=generatedFname;a.click();
-  // Step 2: Open WhatsApp with preset number after short delay
-  setTimeout(function(){
-    var waMsg='⛽ *Diesel Calculation Report*\n_RPM LOGISTICS PVT. LTD._\n\n📎 Image downloaded — please attach it manually.';
-    window.open('https://wa.me/916206494170?text='+encodeURIComponent(waMsg),'_blank');
-  },600);
 });
 
 // ── GENERATE IMAGE ──
