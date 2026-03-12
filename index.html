@@ -443,8 +443,8 @@ box-shadow:0 4px 18px rgba(249,115,22,.38),0 1px 4px rgba(249,115,22,.18);
       <!-- Share Button -->
       <div class="share-wrap" id="SW">
         <button type="button" class="share-btn" id="SHRBTN">
-          <span class="sb-ico">📸</span>
-          <span class="sb-txt">SHARE AS IMAGE</span>
+          <span class="sb-ico">📲</span>
+          <span class="sb-txt">SHARE ON WHATSAPP</span>
         </button>
       </div>
     </div>
@@ -471,7 +471,7 @@ box-shadow:0 4px 18px rgba(249,115,22,.38),0 1px 4px rgba(249,115,22,.18);
     <div class="snap-rows" id="snapRows"></div>
   </div>
   <div class="snap-footer">
-    <span class="snap-footer-txt">rpm.gt.tc · Fuel Management</span>
+    <span class="snap-footer-txt">RPM LOGISTICS PVT. LTD. · Fuel Management</span>
     <span class="snap-footer-date" id="snapDate"></span>
   </div>
 </div>
@@ -561,13 +561,33 @@ function calc(){
 
 ['cvt','sk','ek','dp','pd'].forEach(function(id){$(id).addEventListener('input',calc)});
 
-// ── SHARE AS IMAGE ──
+// ── PRE-LOAD LOGO AS BASE64 so html2canvas can render it ──
+var logoB64='';
+(function(){
+  var img=new Image();
+  img.crossOrigin='anonymous';
+  img.onload=function(){
+    try{
+      var c=document.createElement('canvas');
+      c.width=img.naturalWidth;c.height=img.naturalHeight;
+      c.getContext('2d').drawImage(img,0,0);
+      logoB64=c.toDataURL('image/png');
+      $('snapLogo').src=logoB64;
+    }catch(e){logoB64='';}
+  };
+  img.src='https://rpm.gt.tc/logo.png?_='+Date.now();
+})();
+
+// ── SHARE ON WHATSAPP ONLY ──
 $('SHRBTN').addEventListener('click',function(){
   if(!lastResult){return;}
 
   var btn=$('SHRBTN');
   btn.disabled=true;
   btn.querySelector('.sb-txt').textContent='GENERATING…';
+
+  // If logo is loaded as base64, ensure snap img shows it
+  if(logoB64){$('snapLogo').src=logoB64;}
 
   // Populate snap card
   $('snapVtype').textContent=lastResult.vtype+' ('+lastResult.mileage+' km/L)';
@@ -584,42 +604,48 @@ $('SHRBTN').addEventListener('click',function(){
 
   var html='';
   rows.forEach(function(r){
-    html+='<div class="snap-row"><span class="snap-rk">'+r.k+'</span><span class="snap-rv'+( r.c?' '+r.c:'')+'" >'+r.v+'</span></div>';
+    html+='<div class="snap-row"><span class="snap-rk">'+r.k+'</span><span class="snap-rv'+(r.c?' '+r.c:'')+'" >'+r.v+'</span></div>';
   });
   $('snapRows').innerHTML=html;
 
   var n=new Date();
+  var fname='RPM_Diesel_'+n.getFullYear()+('0'+(n.getMonth()+1)).slice(-2)+('0'+n.getDate()).slice(-2)+'_'+('0'+n.getHours()).slice(-2)+('0'+n.getMinutes()).slice(-2)+'.png';
   $('snapDate').textContent=('0'+n.getDate()).slice(-2)+'/'+('0'+(n.getMonth()+1)).slice(-2)+'/'+n.getFullYear()+' '+('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2);
 
-  // Position off-screen but renderable
   var sc=$('snapCard');
   sc.style.left='-9999px';
-  sc.style.top='0px'; // must be in a rendered position for html2canvas
+  sc.style.top='0px';
 
-  // Wait a tick for DOM to update
   setTimeout(function(){
     html2canvas(sc,{
       scale:2.5,
       backgroundColor:'#ffffff',
       useCORS:true,
       allowTaint:true,
-      logging:false
+      logging:false,
+      imageTimeout:0
     }).then(function(canvas){
-      // Try native share API (mobile)
-      canvas.toBlob(function(blob){
-        var n=new Date();
-        var fname='RPM_Diesel_Calc_'+n.getFullYear()+('0'+(n.getMonth()+1)).slice(-2)+('0'+n.getDate()).slice(-2)+'_'+('0'+n.getHours()).slice(-2)+('0'+n.getMinutes()).slice(-2)+'.png';
+      var dataUrl=canvas.toDataURL('image/png');
 
-        var canShare=navigator.canShare&&navigator.share;
+      canvas.toBlob(function(blob){
         var file=null;
         try{file=new File([blob],fname,{type:'image/png'});}catch(e){}
 
-        if(canShare&&file&&navigator.canShare({files:[file]})){
-          navigator.share({files:[file],title:'RPM Diesel Calculation',text:'⛽ Diesel calculation by RPM Logistics'})
-            .then(function(){resetBtn();})
-            .catch(function(){fallbackDownload(canvas,fname);resetBtn();});
+        // Try Web Share API with file (mobile WhatsApp picks it up)
+        if(navigator.share&&file&&navigator.canShare&&navigator.canShare({files:[file]})){
+          navigator.share({
+            files:[file],
+            title:'RPM Diesel Calculation',
+            text:'⛽ Diesel Calculation - RPM LOGISTICS PVT. LTD.'
+          }).then(function(){resetBtn();})
+            .catch(function(err){
+              // User cancelled or WA not available — fallback: download + open WA
+              if(err.name!=='AbortError'){waFallback(dataUrl,fname);}
+              resetBtn();
+            });
         } else {
-          fallbackDownload(canvas,fname);
+          // Desktop or browser without share API: download image then open WA web
+          waFallback(dataUrl,fname);
           resetBtn();
         }
       },'image/png');
@@ -630,16 +656,19 @@ $('SHRBTN').addEventListener('click',function(){
     });
   },80);
 
-  function fallbackDownload(canvas,fname){
+  function waFallback(dataUrl,fname){
+    // Download the image first
     var a=document.createElement('a');
-    a.href=canvas.toDataURL('image/png');
-    a.download=fname;
-    a.click();
+    a.href=dataUrl;a.download=fname;a.click();
+    // Then open WhatsApp after a short delay
+    setTimeout(function(){
+      window.open('https://wa.me/916206494170?text='+encodeURIComponent('⛽ Diesel Calculation Image attached - RPM LOGISTICS PVT. LTD.'),'_blank');
+    },800);
   }
 
   function resetBtn(){
     btn.disabled=false;
-    btn.querySelector('.sb-txt').textContent='SHARE AS IMAGE';
+    btn.querySelector('.sb-txt').textContent='📲 SHARE ON WHATSAPP';
   }
 });
 
