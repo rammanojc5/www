@@ -451,6 +451,33 @@ box-shadow:0 4px 18px rgba(249,115,22,.38),0 1px 4px rgba(249,115,22,.18);
   </div>
 </div>
 
+<!-- IMAGE PREVIEW MODAL -->
+<div class="ov" id="IMGOV">
+  <div class="modal">
+    <div class="m-handle"></div>
+    <div class="m-head">
+      <div class="m-title">📸 Image <em>Preview</em></div>
+      <button class="m-close" id="IMGCLOSE" type="button">✕</button>
+    </div>
+    <div class="m-body" style="padding:14px 16px 28px">
+      <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:14px;background:var(--surface)">
+        <img id="IMGPREV" src="" alt="Diesel Calculation" style="width:100%;display:block;border-radius:12px">
+      </div>
+      <div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:14px;line-height:1.6">
+        📥 Pehle image <strong>Save/Download</strong> karo<br>phir WhatsApp mein manually attach karo
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button type="button" id="IMGDL" style="height:46px;border:1.5px solid var(--border);border-radius:11px;background:var(--surface);font-family:var(--font);font-size:13px;font-weight:700;color:var(--ink2);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+          <span style="font-size:16px">💾</span> SAVE IMG
+        </button>
+        <button type="button" id="IMGWA" style="height:46px;border:none;border-radius:11px;background:linear-gradient(135deg,#25d366,#128c7e);font-family:var(--font);font-size:13px;font-weight:800;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 14px rgba(37,211,102,.35)">
+          <span style="font-size:16px">💬</span> OPEN WHATSAPP
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Hidden snapshot card for image capture -->
 <div id="snapCard">
   <div class="snap-header">
@@ -561,7 +588,7 @@ function calc(){
 
 ['cvt','sk','ek','dp','pd'].forEach(function(id){$(id).addEventListener('input',calc)});
 
-// ── PRE-LOAD LOGO AS BASE64 so html2canvas can render it ──
+// ── PRE-LOAD LOGO AS BASE64 ──
 var logoB64='';
 (function(){
   var img=new Image();
@@ -575,21 +602,44 @@ var logoB64='';
       $('snapLogo').src=logoB64;
     }catch(e){logoB64='';}
   };
+  img.onerror=function(){logoB64='';};
   img.src='https://rpm.gt.tc/logo.png?_='+Date.now();
 })();
 
-// ── SHARE ON WHATSAPP ONLY ──
+// ── IMAGE PREVIEW MODAL ──
+var imgOv=$('IMGOV'),imgPrev=$('IMGPREV'),imgDlBtn=$('IMGDL'),imgWaBtn=$('IMGWA'),imgClose=$('IMGCLOSE');
+var generatedDataUrl='',generatedFname='';
+
+imgClose.addEventListener('click',function(){imgOv.classList.remove('on');});
+imgOv.addEventListener('click',function(ev){if(ev.target===imgOv)imgOv.classList.remove('on');});
+
+imgDlBtn.addEventListener('click',function(){
+  if(!generatedDataUrl)return;
+  var a=document.createElement('a');
+  a.href=generatedDataUrl;a.download=generatedFname;a.click();
+});
+
+imgWaBtn.addEventListener('click',function(){
+  if(!generatedDataUrl)return;
+  // Step 1: Download image
+  var a=document.createElement('a');
+  a.href=generatedDataUrl;a.download=generatedFname;a.click();
+  // Step 2: Open WhatsApp with preset number after short delay
+  setTimeout(function(){
+    var waMsg='⛽ *Diesel Calculation Report*\n_RPM LOGISTICS PVT. LTD._\n\n📎 Image downloaded — please attach it manually.';
+    window.open('https://wa.me/916206494170?text='+encodeURIComponent(waMsg),'_blank');
+  },600);
+});
+
+// ── GENERATE IMAGE ──
 $('SHRBTN').addEventListener('click',function(){
   if(!lastResult){return;}
-
   var btn=$('SHRBTN');
   btn.disabled=true;
   btn.querySelector('.sb-txt').textContent='GENERATING…';
 
-  // If logo is loaded as base64, ensure snap img shows it
   if(logoB64){$('snapLogo').src=logoB64;}
 
-  // Populate snap card
   $('snapVtype').textContent=lastResult.vtype+' ('+lastResult.mileage+' km/L)';
 
   var rows=[
@@ -601,7 +651,6 @@ $('SHRBTN').addEventListener('click',function(){
     {k:'Price per Liter',v:'₹'+lastResult.pricePerL.toFixed(2),c:''},
     {k:'Previous Amount',v:'₹'+lastResult.prevAmt.toFixed(0),c:''}
   ];
-
   var html='';
   rows.forEach(function(r){
     html+='<div class="snap-row"><span class="snap-rk">'+r.k+'</span><span class="snap-rv'+(r.c?' '+r.c:'')+'" >'+r.v+'</span></div>';
@@ -609,7 +658,7 @@ $('SHRBTN').addEventListener('click',function(){
   $('snapRows').innerHTML=html;
 
   var n=new Date();
-  var fname='RPM_Diesel_'+n.getFullYear()+('0'+(n.getMonth()+1)).slice(-2)+('0'+n.getDate()).slice(-2)+'_'+('0'+n.getHours()).slice(-2)+('0'+n.getMinutes()).slice(-2)+'.png';
+  generatedFname='RPM_Diesel_'+n.getFullYear()+('0'+(n.getMonth()+1)).slice(-2)+('0'+n.getDate()).slice(-2)+'_'+('0'+n.getHours()).slice(-2)+('0'+n.getMinutes()).slice(-2)+'.png';
   $('snapDate').textContent=('0'+n.getDate()).slice(-2)+'/'+('0'+(n.getMonth()+1)).slice(-2)+'/'+n.getFullYear()+' '+('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2);
 
   var sc=$('snapCard');
@@ -625,51 +674,19 @@ $('SHRBTN').addEventListener('click',function(){
       logging:false,
       imageTimeout:0
     }).then(function(canvas){
-      var dataUrl=canvas.toDataURL('image/png');
-
-      canvas.toBlob(function(blob){
-        var file=null;
-        try{file=new File([blob],fname,{type:'image/png'});}catch(e){}
-
-        // Try Web Share API with file (mobile WhatsApp picks it up)
-        if(navigator.share&&file&&navigator.canShare&&navigator.canShare({files:[file]})){
-          navigator.share({
-            files:[file],
-            title:'RPM Diesel Calculation',
-            text:'⛽ Diesel Calculation - RPM LOGISTICS PVT. LTD.'
-          }).then(function(){resetBtn();})
-            .catch(function(err){
-              // User cancelled or WA not available — fallback: download + open WA
-              if(err.name!=='AbortError'){waFallback(dataUrl,fname);}
-              resetBtn();
-            });
-        } else {
-          // Desktop or browser without share API: download image then open WA web
-          waFallback(dataUrl,fname);
-          resetBtn();
-        }
-      },'image/png');
+      generatedDataUrl=canvas.toDataURL('image/png');
+      // Show preview modal
+      $('IMGPREV').src=generatedDataUrl;
+      imgOv.classList.add('on');
+      btn.disabled=false;
+      btn.querySelector('.sb-txt').textContent='📲 SHARE ON WHATSAPP';
     }).catch(function(err){
       console.error(err);
       alert('Image generate nahi ho saki. Dobara try karein.');
-      resetBtn();
+      btn.disabled=false;
+      btn.querySelector('.sb-txt').textContent='📲 SHARE ON WHATSAPP';
     });
   },80);
-
-  function waFallback(dataUrl,fname){
-    // Download the image first
-    var a=document.createElement('a');
-    a.href=dataUrl;a.download=fname;a.click();
-    // Then open WhatsApp after a short delay
-    setTimeout(function(){
-      window.open('https://wa.me/916206494170?text='+encodeURIComponent('⛽ Diesel Calculation Image attached - RPM LOGISTICS PVT. LTD.'),'_blank');
-    },800);
-  }
-
-  function resetBtn(){
-    btn.disabled=false;
-    btn.querySelector('.sb-txt').textContent='📲 SHARE ON WHATSAPP';
-  }
 });
 
 })();
